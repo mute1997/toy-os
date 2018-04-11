@@ -1,12 +1,5 @@
-#include "multiboot.h"
-
-void main(void) {
-  unsigned short *screen = (unsigned short *)0xB8000;
-  char *msg = "kernel";
-  char ch;
-
-  while((ch=*msg++))
-    *screen++ = ((0x0F)<<8 | ch);
-
-  while(1);
+void kernel_main(void) {
+  while(1) {
+    __asm__ __volatile__ ("hlt");
+  }
 }
