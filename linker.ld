@@ -1,15 +1,11 @@
-ENTRY(start)
+ENTRY(kernel_main)
 
 SECTIONS {
     . = 1M;
 
-    .boot :
-    {
-        *(.multiboot_header)
-    }
-
     .text :
     {
+        *(.multiboot_header)
         *(.text)
     }
 }
