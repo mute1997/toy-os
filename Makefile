@@ -10,7 +10,7 @@ CFLAGS = \
 				 -c \
 				 -masm=intel
 LD     = ld
-LDFLAGS = -nostdlib
+LDFLAGS = -nostdlib -Map kernel.map
 BUILD_DIR = build
 SRC_DIR = src
 
