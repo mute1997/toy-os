@@ -3,25 +3,24 @@ ENTRY(kernel_main)
 SECTIONS {
     . = 1M;
 
-    .text
+    .text :
     {
         *(.multiboot_header)
         *(.text)
     }
 
-    .rodata
+    .rodata :
     {
       *(.rodata)
     }
 
-    .data
+    .data :
     {
       *(.data)
     }
 
-    bss.
+    bss :
     {
-      *(COMMON)
       *(.bss)
     }
 

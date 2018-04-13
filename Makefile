@@ -11,8 +11,11 @@ CFLAGS = \
 				 -masm=intel
 LD     = ld
 LDFLAGS = -nostdlib -Map kernel.map
+LDSCRIPT = scripts/kernel.ld
+
 BUILD_DIR = build
 SRC_DIR = src
+
 DOCKER_IMAGE=mutexos
 DOCKER_TAG=0.1
 
@@ -21,7 +24,10 @@ all: kernel.elf
 kernel.elf:
 	nasm -f elf64 -o $(BUILD_DIR)/loader.o $(SRC_DIR)/loader.asm
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/kernel.o $(SRC_DIR)/kernel.c
-	$(LD) $(LDFLAGS) -n -o $(BUILD_DIR)/kernel.elf -T $(SRC_DIR)/linker.ld $(BUILD_DIR)/loader.o $(BUILD_DIR)/kernel.o
+	$(LD) $(LDFLAGS) -n \
+		-o $(BUILD_DIR)/kernel.elf \
+		-T $(LDSCRIPT) \
+		$(BUILD_DIR)/loader.o $(BUILD_DIR)/kernel.o
 
 .PHONY: clean
 clean:

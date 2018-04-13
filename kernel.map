@@ -15,22 +15,27 @@ Linker script and memory map
  *(.text)
  .text          0x0000000000100018        0x3 build/kernel.o
                 0x0000000000100018                kernel_main
-LOAD build/loader.o
-LOAD build/kernel.o
-OUTPUT(build/kernel.elf elf64-x86-64)
 
 .text.unlikely  0x000000000010001b        0x0
  .text.unlikely
                 0x000000000010001b        0x0 build/kernel.o
 
+.rodata
+ *(.rodata)
+
 .eh_frame       0x0000000000100020       0x30
  .eh_frame      0x0000000000100020       0x30 build/kernel.o
 
 .data           0x0000000000100050        0x0
+ *(.data)
  .data          0x0000000000100050        0x0 build/kernel.o
 
-.bss            0x0000000000100050        0x0
+bss             0x0000000000100050        0x0
+ *(.bss)
  .bss           0x0000000000100050        0x0 build/kernel.o
+LOAD build/loader.o
+LOAD build/kernel.o
+OUTPUT(build/kernel.elf elf64-x86-64)
 
 .comment        0x0000000000000000       0x34
  .comment       0x0000000000000000       0x34 build/kernel.o
