@@ -1,10 +1,10 @@
 
-メモリ設定
+Memory Configuration
 
-名前           原点             長さ             属性
+Name             Origin             Length             Attributes
 *default*        0x0000000000000000 0xffffffffffffffff
 
-リンカスクリプトおよびメモリマップ
+Linker script and memory map
 
                 0x0000000000100000                . = 0x100000
 
@@ -19,35 +19,22 @@ LOAD build/loader.o
 LOAD build/kernel.o
 OUTPUT(build/kernel.elf elf64-x86-64)
 
-.eh_frame       0x0000000000100020       0x2c
- .eh_frame      0x0000000000100020       0x2c build/kernel.o
-                                         0x30 (緩和前のサイズ)
+.text.unlikely  0x000000000010001b        0x0
+ .text.unlikely
+                0x000000000010001b        0x0 build/kernel.o
 
-.iplt           0x0000000000100050        0x0
- .iplt          0x0000000000100050        0x0 build/loader.o
+.eh_frame       0x0000000000100020       0x30
+ .eh_frame      0x0000000000100020       0x30 build/kernel.o
 
-.got            0x0000000000100050        0x0
- .got           0x0000000000100050        0x0 build/loader.o
+.data           0x0000000000100050        0x0
+ .data          0x0000000000100050        0x0 build/kernel.o
 
-.got.plt        0x0000000000100050        0x0
- .got.plt       0x0000000000100050        0x0 build/loader.o
+.bss            0x0000000000100050        0x0
+ .bss           0x0000000000100050        0x0 build/kernel.o
 
-.igot.plt       0x0000000000100050        0x0
- .igot.plt      0x0000000000100050        0x0 build/loader.o
-
-.data           0x000000000010004c        0x0
- .data          0x000000000010004c        0x0 build/kernel.o
-
-.rela.dyn       0x0000000000100050        0x0
- .rela.got      0x0000000000100050        0x0 build/loader.o
- .rela.iplt     0x0000000000100050        0x0 build/loader.o
-
-.bss            0x000000000010004c        0x0
- .bss           0x000000000010004c        0x0 build/kernel.o
-
-.comment        0x0000000000000000       0x1a
- .comment       0x0000000000000000       0x1a build/kernel.o
-                                         0x1b (緩和前のサイズ)
+.comment        0x0000000000000000       0x34
+ .comment       0x0000000000000000       0x34 build/kernel.o
+                                         0x35 (size before relaxing)
 
 .note.GNU-stack
                 0x0000000000000000        0x0
