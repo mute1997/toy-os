@@ -1,4 +1,4 @@
-ENTRY(kernel_main)
+ENTRY(setup)
 
 SECTIONS {
     . = 1M;

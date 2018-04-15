@@ -1,6 +1,9 @@
 #include <string.h>
 
-void kernel_main(void) {
+void setup_memory() {
+}
+
+void setup() {
   memset();
   while(1) {
     __asm__ __volatile__ ("hlt");
