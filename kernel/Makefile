@@ -1,3 +1,5 @@
+ARCH=i386
+
 # -----------------------
 #  command
 # -----------------------
@@ -19,37 +21,30 @@ LDFLAGS = -nostdlib -Map ../build/kernel.map
 LDSCRIPT = ../scripts/kernel.ld
 
 # -----------------------
-#  arch
+#  Directories
 # -----------------------
-ARCH=../arch
+ARCH_DIR=../arch
+BOOT_DIR=../boot
 
-# -----------------------
-#  boot
-# -----------------------
-BOOT=../boot
+# output
+BUILD_DIR=../build
+KERNEL_ELF=$(BUILD_DIR)/kernel.elf
 
 # -----------------------
 #  object
 # -----------------------
-OBJS = $(ARCH)/arch.o \
-			$(BOOT)/loader.o
-
-# -----------------------
-#  Directories
-# -----------------------
-BUILD_DIR=../build
-OUTPUT_FILE=$(BUILD_DIR)/kernel.elf
+OBJS = $(ARCH_DIR)/$(ARCH)/kernel/setup.o \
+			$(ARCH_DIR)/$(ARCH)/lib/string.o
 
 
-.PHONY: all
-all:
-	($(CD) $(ARCH);$(MAKE))
-	($(CD) $(BOOT);$(MAKE))
+all: $(OBJS)
+	($(CD) $(BOOT_DIR);$(MAKE))
 	$(LD) $(LDFLAGS) -n  -T $(LDSCRIPT) \
-		-o $(OUTPUT_FILE) \
-		$(BOOT)/loader.o $(ARCH)/arch.o
+		-o $(KERNEL_ELF) \
+		$(BOOT_DIR)/loader.o $(OBJS)
 
 .PHONEY: clean
 clean:
-	($(CD) $(ARCH);$(MAKE) clean)
-	($(CD) $(BOOT);$(MAKE) clean)
+	rm $(OBJS)
+	rm $(KERNEL_ELF)
+	rm ../build/kernel.map

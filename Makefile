@@ -7,7 +7,7 @@ CD=cd
 # Directories
 # -----------------
 BUILD_DIR=build
-OUTPUT_DIR=kernel
+KERNEL=kernel
 
 # -----------------
 # Docker
@@ -20,11 +20,11 @@ DOCKER_TAG=0.1
 # -----------------
 .PHONY: all
 all:
-	($(CD) $(OUTPUT_DIR);$(MAKE))
+	($(CD) $(KERNEL);$(MAKE))
 
 .PHONY: clean
 clean:
-	($(CD) $(OUTPUT_DIR);$(MAKE) clean)
+	($(CD) $(KERNEL);$(MAKE) clean)
 
 
 # -----------------------------

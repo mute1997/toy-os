@@ -1,9 +1,8 @@
-KOBJECT=loader.o
-OBJECT=loader.asm
+OBJS=loader.o
 
 .PHONY: all
-all: $(KOBJECTS)
-	nasm -f elf64 -o $(KOBJECT) $(OBJECT)
+all:
+	nasm -f elf64 -o $(OBJS) loader.asm
 
 .PHONEY: clean
 clean:
