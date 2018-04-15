@@ -1,6 +1,6 @@
 ARCH=i386
-KOBJECT=kernel.o
-OBJECT=kernel.c
+SRCS=$(ARCH)/kernel.c
+OUTPUT=arch.o
 
 CC     = gcc
 CFLAGS = \
@@ -12,12 +12,13 @@ CFLAGS = \
 				 -Os \
 				 -Wall \
 				 -c \
-				 -masm=intel
+				 -masm=intel \
+				 -I ../include
 
 .PHONY: all
-all: $(KOBJECTS)
-	$(CC) $(CFLAGS) -o $(KOBJECT) $(ARCH)/$(OBJECT)
+all:
+	$(CC) $(CFLAGS) -o $(OUTPUT) $(SRCS)
 
 .PHONEY: clean
 clean:
-	rm $(KOBJECT)
+	rm $(OUTPUT)

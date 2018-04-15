@@ -1,0 +1,2 @@
+static inline void memset() {
+}

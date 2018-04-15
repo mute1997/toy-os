@@ -1,22 +1,13 @@
-# -----------------
-# Dependencies
-# -----------------
-LD     = ld
-LDFLAGS = -nostdlib -Map kernel.map
-LDSCRIPT = scripts/kernel.ld
-CD = cd
+# -----------------------
+#  command
+# -----------------------
+CD=cd
 
 # -----------------
-# Input Directorys
-# -----------------
-BOOT_DIR=boot
-ARCH_DIR=arch
-
-# -----------------
-# Output Directory
+# Directories
 # -----------------
 BUILD_DIR=build
-OUTPUT_FILE=$(BUILD_DIR)/kernel.elf
+OUTPUT_DIR=kernel
 
 # -----------------
 # Docker
@@ -29,16 +20,11 @@ DOCKER_TAG=0.1
 # -----------------
 .PHONY: all
 all:
-	($(CD) $(BOOT_DIR);$(MAKE))
-	($(CD) $(ARCH_DIR);$(MAKE))
-	$(LD) $(LDFLAGS) -n  -T $(LDSCRIPT) \
-		-o $(OUTPUT_FILE) \
-		$(BOOT_DIR)/loader.o $(ARCH_DIR)/kernel.o
+	($(CD) $(OUTPUT_DIR);$(MAKE))
 
 .PHONY: clean
 clean:
-	($(CD) $(BOOT_DIR);$(MAKE) clean)
-	($(CD) $(ARCH_DIR);$(MAKE) clean)
+	($(CD) $(OUTPUT_DIR);$(MAKE) clean)
 
 
 # -----------------------------
