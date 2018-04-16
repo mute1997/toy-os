@@ -1,2 +1,1 @@
-static inline void memset() {
-}
+void *memset(void *s, int c, int n);

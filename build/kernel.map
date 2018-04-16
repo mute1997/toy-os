@@ -1,0 +1,73 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000000100000                . = 0x100000
+
+.text           0x0000000000100000       0x4f
+ *(.multiboot_header)
+ .multiboot_header
+                0x0000000000100000       0x18 ../boot/loader.o
+ *(.text)
+ .text          0x0000000000100018       0x21 ../arch/i386/kernel/setup.o
+                0x0000000000100018                setup_memory
+                0x000000000010002e                setup
+ .text          0x0000000000100039       0x16 ../arch/i386/lib/string.o
+                0x0000000000100039                memset
+
+.text.unlikely  0x000000000010004f        0x0
+ .text.unlikely
+                0x000000000010004f        0x0 ../arch/i386/kernel/setup.o
+ .text.unlikely
+                0x000000000010004f        0x0 ../arch/i386/lib/string.o
+
+.iplt           0x0000000000100050        0x0
+ .iplt          0x0000000000100050        0x0 ../arch/i386/kernel/setup.o
+
+.rodata
+ *(.rodata)
+
+.eh_frame       0x0000000000100050       0x60
+ .eh_frame      0x0000000000100050       0x48 ../arch/i386/kernel/setup.o
+                                         0x40 (size before relaxing)
+ .eh_frame      0x0000000000100098       0x18 ../arch/i386/lib/string.o
+                                         0x30 (size before relaxing)
+
+.rela.dyn       0x00000000001000b0        0x0
+ .rela.iplt     0x00000000001000b0        0x0 ../arch/i386/kernel/setup.o
+ .rela.text     0x00000000001000b0        0x0 ../arch/i386/kernel/setup.o
+
+.data           0x00000000001000b0        0x0
+ *(.data)
+ .data          0x00000000001000b0        0x0 ../arch/i386/kernel/setup.o
+ .data          0x00000000001000b0        0x0 ../arch/i386/lib/string.o
+
+.igot.plt       0x00000000001000b0        0x0
+ .igot.plt      0x00000000001000b0        0x0 ../arch/i386/kernel/setup.o
+
+bss             0x00000000001000b0        0x0
+                0x00000000001000b0                _bss_start = .
+ *(.bss)
+ .bss           0x00000000001000b0        0x0 ../arch/i386/kernel/setup.o
+ .bss           0x00000000001000b0        0x0 ../arch/i386/lib/string.o
+                0x00000000001000b0                _bss_end = .
+LOAD ../boot/loader.o
+LOAD ../arch/i386/kernel/setup.o
+LOAD ../arch/i386/lib/string.o
+OUTPUT(../build/kernel.elf elf64-x86-64)
+
+.comment        0x0000000000000000       0x34
+ .comment       0x0000000000000000       0x34 ../arch/i386/kernel/setup.o
+                                         0x35 (size before relaxing)
+ .comment       0x0000000000000034       0x35 ../arch/i386/lib/string.o
+
+.note.GNU-stack
+                0x0000000000000000        0x0
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../arch/i386/kernel/setup.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../arch/i386/lib/string.o
