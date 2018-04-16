@@ -6,11 +6,7 @@ ARCH=i386
 CD=cd
 CC=gcc
 CFLAGS = \
-				 -pipe \
-				 -ffreestanding \
-				 -fno-common \
 				 -fno-builtin \
-				 -fomit-frame-pointer \
 				 -Os \
 				 -Wall \
 				 -c \
