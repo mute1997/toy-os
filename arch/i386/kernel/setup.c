@@ -12,12 +12,14 @@ void setup_memory() {
 
 void setup() {
   setup_memory();
+
   flush_screen();
 
-  // TODO: printkを作る
-  int i = 0;
-  int j = 0;
-  put_str(VRAM_MODE, i, j, COLOR_LIGHTGREY, 'X');
+  for (int i=0;i<20;i++) {
+    for (int j=0;j<10;j++) {
+      put_str(VRAM_MODE, i, j, COLOR_LIGHTGREY, 'X');
+    }
+  }
 
   hlt();
 }
