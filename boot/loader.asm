@@ -14,6 +14,7 @@ header_start:
     dd 8    ; size
 header_end:
 
+global start
 extern setup
 STACK_SIZE equ 0x1000
 
