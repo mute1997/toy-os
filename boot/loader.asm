@@ -13,3 +13,21 @@ header_start:
     dw 0    ; flags
     dd 8    ; size
 header_end:
+
+extern setup
+STACK_SIZE equ 0x1000
+
+section .text
+start:
+  mov esp, stack+STACK_SIZE
+
+  push ebx
+  push eax
+
+  call setup
+
+  hlt
+
+section.bss
+stack:
+  resb STACK_SIZE

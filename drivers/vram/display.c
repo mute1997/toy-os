@@ -1,11 +1,8 @@
 #include <drivers/display.h>
 
 void flush_display(void) {
-  // TODO: とりあえずなんか表示させたい
-  char *p;
-  unsigned long i;
-  for(i = 0xa0000; i <= 0xaffff; i++){
-    p = (char *)i;
-    *p = 0;
+  char *vidptr = (char*)0xb8000;
+  for (int i=0;i<100000;i++) {
+    vidptr[i] = ' ';
   }
 }

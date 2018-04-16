@@ -2,7 +2,7 @@ OBJS=loader.o
 
 .PHONY: all
 all:
-	nasm -f elf64 -o $(OBJS) loader.asm
+	nasm -f elf32 -o $(OBJS) loader.asm
 
 .PHONEY: clean
 clean:

@@ -11,9 +11,10 @@ CFLAGS = \
 				 -Wall \
 				 -c \
 				 -masm=intel \
-				 -I ../include
+				 -I ../include \
+				 -m32
 LD     = ld
-LDFLAGS = -nostdlib -Map ../build/kernel.map
+LDFLAGS = -nostdlib -Map ../build/kernel.map -m elf_i386
 LDSCRIPT = ../scripts/kernel.ld
 
 # -----------------------
