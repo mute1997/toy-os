@@ -1,5 +1,5 @@
-#include <string.h>
-#include <hlt.h>
+#include <std/string.h>
+#include <std/hlt.h>
 #include <drivers/video.h>
 
 extern unsigned long _bss_start;
