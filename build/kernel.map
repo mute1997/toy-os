@@ -8,62 +8,72 @@ Linker script and memory map
 
                 0x0000000000100000                . = 0x100000
 
-.text           0x0000000000100000       0x4f
+.text           0x0000000000100000       0x68
  *(.multiboot_header)
  .multiboot_header
                 0x0000000000100000       0x18 ../boot/loader.o
  *(.text)
- .text          0x0000000000100018       0x21 ../arch/i386/kernel/setup.o
+ .text          0x0000000000100018       0x26 ../arch/i386/kernel/setup.o
                 0x0000000000100018                setup_memory
                 0x000000000010002e                setup
- .text          0x0000000000100039       0x16 ../arch/i386/lib/string.o
-                0x0000000000100039                memset
+ .text          0x000000000010003e       0x16 ../arch/i386/lib/string.o
+                0x000000000010003e                memset
+ .text          0x0000000000100054       0x14 ../arch/../drivers/vram/display.o
+                0x0000000000100054                flush_display
 
-.text.unlikely  0x000000000010004f        0x0
+.text.unlikely  0x0000000000100068        0x0
  .text.unlikely
-                0x000000000010004f        0x0 ../arch/i386/kernel/setup.o
+                0x0000000000100068        0x0 ../arch/i386/kernel/setup.o
  .text.unlikely
-                0x000000000010004f        0x0 ../arch/i386/lib/string.o
+                0x0000000000100068        0x0 ../arch/i386/lib/string.o
+ .text.unlikely
+                0x0000000000100068        0x0 ../arch/../drivers/vram/display.o
 
-.iplt           0x0000000000100050        0x0
- .iplt          0x0000000000100050        0x0 ../arch/i386/kernel/setup.o
+.iplt           0x0000000000100070        0x0
+ .iplt          0x0000000000100070        0x0 ../arch/i386/kernel/setup.o
 
 .rodata
  *(.rodata)
 
-.eh_frame       0x0000000000100050       0x60
- .eh_frame      0x0000000000100050       0x48 ../arch/i386/kernel/setup.o
+.eh_frame       0x0000000000100068       0x78
+ .eh_frame      0x0000000000100068       0x48 ../arch/i386/kernel/setup.o
                                          0x40 (size before relaxing)
- .eh_frame      0x0000000000100098       0x18 ../arch/i386/lib/string.o
+ .eh_frame      0x00000000001000b0       0x18 ../arch/i386/lib/string.o
+                                         0x30 (size before relaxing)
+ .eh_frame      0x00000000001000c8       0x18 ../arch/../drivers/vram/display.o
                                          0x30 (size before relaxing)
 
-.rela.dyn       0x00000000001000b0        0x0
- .rela.iplt     0x00000000001000b0        0x0 ../arch/i386/kernel/setup.o
- .rela.text     0x00000000001000b0        0x0 ../arch/i386/kernel/setup.o
+.rela.dyn       0x00000000001000e0        0x0
+ .rela.iplt     0x00000000001000e0        0x0 ../arch/i386/kernel/setup.o
+ .rela.text     0x00000000001000e0        0x0 ../arch/i386/kernel/setup.o
 
-.data           0x00000000001000b0        0x0
+.data           0x00000000001000e0        0x0
  *(.data)
- .data          0x00000000001000b0        0x0 ../arch/i386/kernel/setup.o
- .data          0x00000000001000b0        0x0 ../arch/i386/lib/string.o
+ .data          0x00000000001000e0        0x0 ../arch/i386/kernel/setup.o
+ .data          0x00000000001000e0        0x0 ../arch/i386/lib/string.o
+ .data          0x00000000001000e0        0x0 ../arch/../drivers/vram/display.o
 
-.igot.plt       0x00000000001000b0        0x0
- .igot.plt      0x00000000001000b0        0x0 ../arch/i386/kernel/setup.o
+.igot.plt       0x00000000001000e0        0x0
+ .igot.plt      0x00000000001000e0        0x0 ../arch/i386/kernel/setup.o
 
-bss             0x00000000001000b0        0x0
-                0x00000000001000b0                _bss_start = .
+bss             0x00000000001000e0        0x0
+                0x00000000001000e0                _bss_start = .
  *(.bss)
- .bss           0x00000000001000b0        0x0 ../arch/i386/kernel/setup.o
- .bss           0x00000000001000b0        0x0 ../arch/i386/lib/string.o
-                0x00000000001000b0                _bss_end = .
+ .bss           0x00000000001000e0        0x0 ../arch/i386/kernel/setup.o
+ .bss           0x00000000001000e0        0x0 ../arch/i386/lib/string.o
+ .bss           0x00000000001000e0        0x0 ../arch/../drivers/vram/display.o
+                0x00000000001000e0                _bss_end = .
 LOAD ../boot/loader.o
 LOAD ../arch/i386/kernel/setup.o
 LOAD ../arch/i386/lib/string.o
+LOAD ../arch/../drivers/vram/display.o
 OUTPUT(../build/kernel.elf elf64-x86-64)
 
 .comment        0x0000000000000000       0x34
  .comment       0x0000000000000000       0x34 ../arch/i386/kernel/setup.o
                                          0x35 (size before relaxing)
  .comment       0x0000000000000034       0x35 ../arch/i386/lib/string.o
+ .comment       0x0000000000000034       0x35 ../arch/../drivers/vram/display.o
 
 .note.GNU-stack
                 0x0000000000000000        0x0
@@ -71,3 +81,5 @@ OUTPUT(../build/kernel.elf elf64-x86-64)
                 0x0000000000000000        0x0 ../arch/i386/kernel/setup.o
  .note.GNU-stack
                 0x0000000000000000        0x0 ../arch/i386/lib/string.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../arch/../drivers/vram/display.o

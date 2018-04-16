@@ -25,6 +25,7 @@ LDSCRIPT = ../scripts/kernel.ld
 # -----------------------
 ARCH_DIR=../arch
 BOOT_DIR=../boot
+DRIVER_DIR=../drivers
 
 # output
 BUILD_DIR=../build
@@ -34,7 +35,8 @@ KERNEL_ELF=$(BUILD_DIR)/kernel.elf
 #  object
 # -----------------------
 OBJS = $(ARCH_DIR)/$(ARCH)/kernel/setup.o \
-			$(ARCH_DIR)/$(ARCH)/lib/string.o
+			$(ARCH_DIR)/$(ARCH)/lib/string.o \
+			$(ARCH_DIR)/$(DRIVER_DIR)/vram/display.o
 
 
 all: $(OBJS)
