@@ -11,11 +11,13 @@ void setup_memory() {
 }
 
 void setup() {
-  // FIXME: 関数が呼び出されていない
-  // stackの初期化周りで何かしらうまく行ってないかも
   setup_memory();
-
   flush_screen();
+
+  // TODO: printkを作る
+  int i = 0;
+  int j = 0;
+  put_str(VRAM_MODE, i, j, COLOR_LIGHTGREY, 'X');
 
   hlt();
 }

@@ -8,63 +8,64 @@ Linker script and memory map
 
                 0x0000000000100000                . = 0x100000
 
-.text           0x0000000000100000     0x108f
+.text           0x0000000000100000     0x10db
  *(.multiboot_header)
  .multiboot_header
                 0x0000000000100000       0x18 ../boot/loader.o
  *(.text)
  *fill*         0x0000000000100018        0x8 
  .text          0x0000000000100020     0x100d ../boot/loader.o
- .text          0x000000000010102d       0x34 ../arch/i386/kernel/setup.o
+ .text          0x000000000010102d       0x59 ../arch/i386/kernel/setup.o
                 0x000000000010102d                setup_memory
                 0x000000000010104e                setup
- .text          0x0000000000101061       0x18 ../arch/i386/lib/string.o
-                0x0000000000101061                memset
- .text          0x0000000000101079       0x16 ../arch/../drivers/vram/video.o
-                0x0000000000101079                flush_screen
+ .text          0x0000000000101086       0x18 ../arch/i386/lib/string.o
+                0x0000000000101086                memset
+ .text          0x000000000010109e       0x3d ../arch/../drivers/vram/video.o
+                0x000000000010109e                flush_screen
+                0x00000000001010bd                put_str
 
-.iplt           0x0000000000101090        0x0
- .iplt          0x0000000000101090        0x0 ../boot/loader.o
+.iplt           0x00000000001010e0        0x0
+ .iplt          0x00000000001010e0        0x0 ../boot/loader.o
 
-.text.unlikely  0x000000000010108f        0x0
+.text.unlikely  0x00000000001010db        0x0
  .text.unlikely
-                0x000000000010108f        0x0 ../arch/i386/kernel/setup.o
+                0x00000000001010db        0x0 ../arch/i386/kernel/setup.o
  .text.unlikely
-                0x000000000010108f        0x0 ../arch/i386/lib/string.o
+                0x00000000001010db        0x0 ../arch/i386/lib/string.o
  .text.unlikely
-                0x000000000010108f        0x0 ../arch/../drivers/vram/video.o
+                0x00000000001010db        0x0 ../arch/../drivers/vram/video.o
 
-.rel.dyn        0x0000000000101090        0x0
- .rel.iplt      0x0000000000101090        0x0 ../boot/loader.o
- .rel.text      0x0000000000101090        0x0 ../boot/loader.o
+.rel.dyn        0x00000000001010dc        0x0
+ .rel.iplt      0x00000000001010dc        0x0 ../boot/loader.o
+ .rel.text      0x00000000001010dc        0x0 ../boot/loader.o
 
 .rodata
  *(.rodata)
 
-.eh_frame       0x0000000000101090       0x94
- .eh_frame      0x0000000000101090       0x54 ../arch/i386/kernel/setup.o
- .eh_frame      0x00000000001010e4       0x20 ../arch/i386/lib/string.o
+.eh_frame       0x00000000001010dc       0xb8
+ .eh_frame      0x00000000001010dc       0x58 ../arch/i386/kernel/setup.o
+ .eh_frame      0x0000000000101134       0x20 ../arch/i386/lib/string.o
                                          0x38 (size before relaxing)
- .eh_frame      0x0000000000101104       0x20 ../arch/../drivers/vram/video.o
-                                         0x38 (size before relaxing)
+ .eh_frame      0x0000000000101154       0x40 ../arch/../drivers/vram/video.o
+                                         0x58 (size before relaxing)
 
-.data           0x0000000000101124        0x0
+.data           0x0000000000101194        0x0
  *(.data)
- .data          0x0000000000101124        0x0 ../arch/i386/kernel/setup.o
- .data          0x0000000000101124        0x0 ../arch/i386/lib/string.o
- .data          0x0000000000101124        0x0 ../arch/../drivers/vram/video.o
+ .data          0x0000000000101194        0x0 ../arch/i386/kernel/setup.o
+ .data          0x0000000000101194        0x0 ../arch/i386/lib/string.o
+ .data          0x0000000000101194        0x0 ../arch/../drivers/vram/video.o
 
-.igot.plt       0x0000000000101124        0x0
- .igot.plt      0x0000000000101124        0x0 ../boot/loader.o
+.igot.plt       0x0000000000101194        0x0
+ .igot.plt      0x0000000000101194        0x0 ../boot/loader.o
 
-bss             0x0000000000101124        0x0
-                0x0000000000101124                _bss_start = .
+bss             0x0000000000101194        0x0
+                0x0000000000101194                _bss_start = .
  *(COMMON)
  *(.bss)
- .bss           0x0000000000101124        0x0 ../arch/i386/kernel/setup.o
- .bss           0x0000000000101124        0x0 ../arch/i386/lib/string.o
- .bss           0x0000000000101124        0x0 ../arch/../drivers/vram/video.o
-                0x0000000000101124                _bss_end = .
+ .bss           0x0000000000101194        0x0 ../arch/i386/kernel/setup.o
+ .bss           0x0000000000101194        0x0 ../arch/i386/lib/string.o
+ .bss           0x0000000000101194        0x0 ../arch/../drivers/vram/video.o
+                0x0000000000101194                _bss_end = .
 LOAD ../boot/loader.o
 LOAD ../arch/i386/kernel/setup.o
 LOAD ../arch/i386/lib/string.o
