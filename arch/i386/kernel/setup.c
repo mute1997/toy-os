@@ -1,14 +1,13 @@
 #include <string.h>
 #include <hlt.h>
-#include <drivers/display.h>
+#include <drivers/video.h>
 
 extern unsigned long _bss_start;
 extern unsigned long _bss_end;
 
 void setup_memory() {
-  // FIXME: bssをクリアすると死ぬ
   // initialize bss section
-  // memset((void *)_bss_start, 0x00, _bss_end-_bss_start);
+  memset((void *)_bss_start, 0x00, _bss_end-_bss_start);
 }
 
 void setup() {
@@ -16,7 +15,7 @@ void setup() {
   // stackの初期化周りで何かしらうまく行ってないかも
   setup_memory();
 
-  flush_display();
+  flush_screen();
 
   hlt();
 }

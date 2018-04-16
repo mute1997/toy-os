@@ -33,7 +33,7 @@ KERNEL_ELF=$(BUILD_DIR)/kernel.elf
 # -----------------------
 OBJS = $(ARCH_DIR)/$(ARCH)/kernel/setup.o \
 			$(ARCH_DIR)/$(ARCH)/lib/string.o \
-			$(ARCH_DIR)/$(DRIVER_DIR)/vram/display.o
+			$(ARCH_DIR)/$(DRIVER_DIR)/vram/video.o
 
 
 all: $(OBJS)
