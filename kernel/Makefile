@@ -24,6 +24,7 @@ ARCH_DIR=../arch
 BOOT_DIR=../boot
 DRIVER_DIR=../drivers
 KERNEL_DIR=.
+LIB_DIR=../lib
 
 # output
 BUILD_DIR=../build
@@ -35,7 +36,8 @@ KERNEL_ELF=$(BUILD_DIR)/kernel.elf
 OBJS = $(ARCH_DIR)/$(ARCH)/kernel/setup.o \
 			$(ARCH_DIR)/$(ARCH)/lib/string.o \
 			$(ARCH_DIR)/$(DRIVER_DIR)/vram/video.o \
-			$(KERNEL_DIR)/printk.o
+			$(KERNEL_DIR)/printk.o \
+			$(LIB_DIR)/vsprintf.o
 
 
 all: $(OBJS)
