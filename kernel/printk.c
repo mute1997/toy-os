@@ -3,19 +3,23 @@
 
 #define LOG_BUF_SIZE 32768
 
-static char printk_buf[LOG_BUF_SIZE][1024];
-// static unsigned long top;
-static unsigned long bottom;
+static char *log_buf[LOG_BUF_SIZE];
+static unsigned long top = 0;
+static unsigned long bottom = 0;
 
-extern int vsnprintf(char *buf, unsigned long size, const char* fmt, va_list arg);
+extern int vsnprintf(char *buf, unsigned long size, const char *fmt, va_list args);
 
 int vprintk(const char *fmt, va_list args) {
-  // TODO: ここで落ちてるくさい
-  int printed_len = vsnprintf(printk_buf[bottom], sizeof(printk_buf[bottom]), fmt, args);
+  int printed_len = vsnprintf(log_buf[bottom], sizeof(log_buf[bottom]), fmt, args);
 
   flush_screen();
 
+  put_str(VRAM_MODE, 0, 0, COLOR_LIGHTGREY, (char*)1);
   // TODO: printk_bufの内容を書き出し
+  int lines = bottom - top + 1;
+  for (int i=0;i<lines;i++) {
+    // put_str(VRAM_MODE, i, 0, COLOR_LIGHTGREY, 'A');
+  }
 
   return printed_len;
 }

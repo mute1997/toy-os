@@ -1,5 +1,6 @@
 #include <std/string.h>
 #include <std/hlt.h>
+#include <std/printk.h>
 #include <drivers/video.h>
 
 extern unsigned long _bss_start;
@@ -12,12 +13,13 @@ void setup_memory() {
 
 void setup() {
   setup_memory();
-
   flush_screen();
 
-  for (int i=0;i<20;i++) {
-    for (int j=0;j<10;j++) {
-      put_str(VRAM_MODE, i, j, COLOR_LIGHTGREY, 'X');
+  printk("abcdefg");
+
+  for (int i=10;i<30;i++) {
+    for (int j=10;j<20;j++) {
+      put_str(VRAM_MODE, i, j, COLOR_LIGHTGREY, "X");
     }
   }
 
