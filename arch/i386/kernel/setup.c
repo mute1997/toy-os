@@ -16,7 +16,7 @@ void setup() {
   flush_screen();
 
   for(int i=0;i<30;i++) {
-    printk("1234567", 1);
+    printk("%s", "abc");
   }
 
   hlt();
