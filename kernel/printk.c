@@ -2,10 +2,11 @@
 #include <std/stdarg.h>
 
 #define LOG_BUF_SIZE 32768
+#define LOG_BUF_LIMIT 25
 
-static char *log_buf[LOG_BUF_SIZE];
-static unsigned long top = 0;
-static unsigned long bottom = 0;
+char log_buf[LOG_BUF_SIZE][256];
+unsigned long top = 0;
+unsigned long bottom = 0;
 
 extern int vsnprintf(char *buf, unsigned long size, const char *fmt, va_list args);
 
@@ -14,12 +15,16 @@ int vprintk(const char *fmt, va_list args) {
 
   flush_screen();
 
-  put_str(VRAM_MODE, 0, 0, COLOR_LIGHTGREY, (char*)1);
-  // TODO: printk_bufの内容を書き出し
+  // output log_buf to screen
   int lines = bottom - top + 1;
-  for (int i=0;i<lines;i++) {
-    // put_str(VRAM_MODE, i, 0, COLOR_LIGHTGREY, 'A');
+  for(int i=0;i<lines;i++) {
+    put_str(VRAM_MODE, 0, i, COLOR_LIGHTGREY, log_buf[top + i]);
   }
+  bottom++;
+
+  // if overflow log_buf, shift top
+  lines = (bottom - top + 1);
+  if(lines > LOG_BUF_LIMIT) top++;
 
   return printed_len;
 }

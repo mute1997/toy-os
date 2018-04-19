@@ -12,7 +12,8 @@ CFLAGS = \
 				 -c \
 				 -masm=intel \
 				 -I ../include \
-				 -m32
+				 -m32 \
+				 -fno-stack-protector
 LD     = ld
 LDFLAGS = -nostdlib -Map ../build/kernel.map -m elf_i386
 LDSCRIPT = ../scripts/kernel.ld

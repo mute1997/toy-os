@@ -15,12 +15,8 @@ void setup() {
   setup_memory();
   flush_screen();
 
-  printk("abcdefg");
-
-  for (int i=10;i<30;i++) {
-    for (int j=10;j<20;j++) {
-      put_str(VRAM_MODE, i, j, COLOR_LIGHTGREY, "X");
-    }
+  for(int i=0;i<30;i++) {
+    printk("1234567", 1);
   }
 
   hlt();
