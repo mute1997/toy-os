@@ -15,14 +15,14 @@ int vprintk(const char *fmt, va_list args) {
 
   flush_screen();
 
-  // output log_buf to screen
+  /* output log_buf to screen */
   int lines = bottom - top + 1;
   for(int i=0;i<lines;i++) {
     put_str(VRAM_MODE, 0, i, COLOR_LIGHTGREY, log_buf[top + i]);
   }
   bottom++;
 
-  // if overflow log_buf, shift top
+  /* if overflow log_buf, shift top */
   lines = (bottom - top + 1);
   if(lines > LOG_BUF_LIMIT) top++;
 

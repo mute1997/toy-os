@@ -2,7 +2,7 @@
 
 void flush_screen(void) {
   char *screen_ptr = (char*)VRAM_MODE;
-  // 25 line, 80 column
+  /* 25 line, 80 column */
   for (int i=0;i<80*25*2;i+=2) {
     screen_ptr[i] = ' ';
     screen_ptr[i+1] = COLOR_LIGHTGREY;

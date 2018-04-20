@@ -41,7 +41,6 @@ int vsnprintf(char *buf, unsigned long size, const char *fmt, va_list args) {
     fmt++;
     switch (*fmt) {
       case 'd':
-        // strに文字列をいれる
         num = va_arg(args, unsigned int);
         str = number(str, end, num);
         break;
