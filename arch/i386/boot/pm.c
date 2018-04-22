@@ -9,10 +9,12 @@ struct gdt_ptr {
 };
 
 struct desc_struct {
-  u16 limit0;
-  u16 base0;
-  u16 base1: 8, type: 4, s: 1, dpl: 2, p: 1;
-  u16 limit1: 4, avl: 1, l: 1, d: 1, g: 1, base2: 8;
+  u16 limit_low;
+  u16 base_low;
+  u8 base_middle;
+  u8 access;
+  u8 granularity;
+  u8 base_high;
 } __attribute__((packed));
 
 /* GDT */
@@ -23,20 +25,7 @@ struct gdt_page {
 static struct gdt_ptr kgdt_ptr;
 static struct gdt_page kgdt;
 
-void gdt_entry_init(u8 flags, u16 base, u16 limit, struct desc_struct *desc) {
-  desc->limit0 = limit;
-  desc->limit1 = ((limit) >> 16) & 0x0F;
-  desc->base0 = base;
-  desc->base1 = ((base) >> 16) & 0xFF;
-  desc->base2 = ((base) >> 24) & 0xFF;
-  desc->type = flags & 0x0F;
-  desc->s = (flags >> 4) & 0x01;
-  desc->dpl = (flags >> 5) & 0x03;
-  desc->p = (flags >> 7) & 0x01;
-  desc->avl = (flags >> 12) & 0x01;
-  desc->l = (flags >> 13) & 0x01;
-  desc->d = (flags >> 14) & 0x01;
-  desc->g = (flags >> 15) & 0x01;
+void gdt_entry_init() {
 }
 
 /* TODO: */
@@ -44,7 +33,10 @@ void setup_gdt() {
   printk("Setup gdt...");
 
   /* Init gdt segments */
-  gdt_entry_init(0x0, 0x0, 0x0, &kgdt.gdt[0]);
+  /* kernel code */
+  /* kernel data */
+  /* user code */
+  /* user data */
 
   printk("[OK]");
 }
