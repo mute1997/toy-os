@@ -12,6 +12,7 @@ CFLAGS = \
 				 -c \
 				 -masm=intel \
 				 -I ../include \
+				 -I ../arch/$(ARCH)/include \
 				 -m32 \
 				 -fno-stack-protector
 LD     = ld
@@ -37,7 +38,7 @@ KERNEL_ELF=$(BUILD_DIR)/kernel.elf
 #  object
 # -----------------------
 OBJS = $(BOOT_DIR)/loader.o \
-			$(BOOT_DIR)/pm.o \
+			$(BOOT_DIR)/protect.o \
 			$(ARCH_DIR)/$(ARCH)/kernel/setup.o \
 			$(ARCH_DIR)/$(ARCH)/lib/string.o \
 			$(ARCH_DIR)/$(DRIVER_DIR)/vram/video.o \

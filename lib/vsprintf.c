@@ -58,5 +58,5 @@ int vsnprintf(char *buf, unsigned long size, const char *fmt, va_list args) {
     }
   }
 
-  return 0;
+  return 0; /* TODO printed_lenを返却する */
 }
