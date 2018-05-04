@@ -3,6 +3,7 @@
 #include <std/printk.h>
 #include <drivers/video.h>
 #include <asm/types.h>
+#include <proto.h>
 
 extern unsigned long _bss_start;
 extern unsigned long _bss_end;
@@ -17,7 +18,5 @@ void setup() {
   setup_memory();
   flush_screen();
   prot_init();
-  10/0;
-  printk("aaaa");
   hlt();
 }

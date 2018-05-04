@@ -13,6 +13,7 @@ CFLAGS = \
 				 -masm=intel \
 				 -I ../include \
 				 -I ../include/arch/$(ARCH)/include \
+				 -I ../kernel \
 				 -m32 \
 				 -fno-stack-protector
 LD     = ld
