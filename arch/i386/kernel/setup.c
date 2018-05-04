@@ -17,5 +17,7 @@ void setup() {
   setup_memory();
   flush_screen();
   prot_init();
+  10/0;
+  printk("aaaa");
   hlt();
 }

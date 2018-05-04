@@ -108,6 +108,11 @@ void init_code_segment(struct desc_struct *desc, u32 base, u32 size, int privile
   desc->access = (privilege << 5) | (PRESENT | SEGMENT | EXECUTABLE | READABLE);
 }
 
+void switch_to_new_idt() {
+  idt_init();
+  load_idt(&idt_desc);
+}
+
 void switch_to_new_gdt() {
   load_gdt(gdt_desc);
   init_seg();
@@ -115,8 +120,7 @@ void switch_to_new_gdt() {
 
 void prot_load_selectors() {
   /* set new IDT */
-  idt_init();
-  load_idt(&idt_desc);
+  switch_to_new_idt();
   printk("Setup idt...  [OK]"); /* TODO 改行コードをいい感じに出す */
 
   /* set new GDT */
