@@ -12,7 +12,7 @@ CFLAGS = \
 				 -c \
 				 -masm=intel \
 				 -I ../include \
-				 -I ../arch/$(ARCH)/include \
+				 -I ../include/arch/$(ARCH)/include \
 				 -m32 \
 				 -fno-stack-protector
 LD     = ld
@@ -43,6 +43,7 @@ OBJS = $(BOOT_DIR)/loader.o \
 			$(ARCH_DIR)/$(ARCH)/lib/string.o \
 			$(ARCH_DIR)/$(DRIVER_DIR)/vram/video.o \
 			$(KERNEL_DIR)/printk.o \
+			$(KERNEL_DIR)/trap.o \
 			$(LIB_DIR)/vsprintf.o
 
 

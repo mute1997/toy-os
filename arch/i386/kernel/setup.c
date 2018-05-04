@@ -16,7 +16,6 @@ void setup_memory() {
 void setup() {
   setup_memory();
   flush_screen();
-  setup_gdt();
-
+  prot_init();
   hlt();
 }
