@@ -10,9 +10,9 @@ void intr_init() {
 
 /* Disable master and slave */
 void i8259_disable() {
-  // outb(INT2_CTLMASK, 0xFF);
-  // outb(INT_CTLMASK, 0xFF);
-  // inb(INT_CTLMASK);
+  outb(INT2_CTLMASK, 0xFF);
+  outb(INT_CTLMASK, 0xFF);
+  inb(INT_CTLMASK);
 }
 
 /* TODO */
