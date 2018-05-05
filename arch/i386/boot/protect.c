@@ -7,11 +7,11 @@
 #define load_gdt(dtr) __asm__ __volatile__ ("lgdt %0"::"m"(dtr))
 #define load_idt(dtr) __asm__ __volatile__("lidt %0"::"m" (*dtr))
 #define init_seg() __asm__ __volatile__ ("\n \
-    mov %ax,%ds \n \
-    mov %ax,%es \n \
-    mov %ax,%fs \n \
-    mov %ax,%gs \n \
-    mov %ax,%ss \n \
+    mov %ds,%ax \n \
+    mov %es,%ax \n \
+    mov %fs,%ax \n \
+    mov %gs,%ax \n \
+    mov %ss,%ax \n \
     ")
 
 static struct desctableptr gdt_desc, idt_desc;

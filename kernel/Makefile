@@ -10,7 +10,6 @@ CFLAGS = \
 				 -Os \
 				 -Wall \
 				 -c \
-				 -masm=intel \
 				 -I ../include \
 				 -I ../include/arch/$(ARCH)/include \
 				 -I ../kernel \
@@ -52,8 +51,8 @@ OBJS = $(BOOT_DIR)/loader.o \
 %.o : %.c
 	$(CC) $(CFLAGS) -o $*.o $*.c
 
-%.o : %.asm
-	$(NASM) $(NASM_FLAGS) -o $*.o $*.asm
+%.o : %.S
+	$(NASM) $(NASM_FLAGS) -o $*.o $*.S
 
 all: $(OBJS)
 	$(LD) $(LDFLAGS) -n  -T $(LDSCRIPT) \

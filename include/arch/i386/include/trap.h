@@ -2,6 +2,12 @@
 #define INTR_PRIVILEGE 0 /* kernel is ring 0 */
 #define USER_PRIVILEGE 3 /* uesr is ring3 */
 
+/* 8251A interrupt controller ports */
+#define INT_CTL 0x20
+#define INT_CTLMASK 0x21
+#define INT2_CTL 0xA0
+#define INT2_CTLMASK 0xA1
+
 /* Interrupt by processor */
 #define DIVIDE_VECTOR 0
 #define DEBUG_VECTOR 1
