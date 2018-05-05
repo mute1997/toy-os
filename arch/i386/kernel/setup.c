@@ -17,6 +17,9 @@ void setup_memory() {
 void setup() {
   setup_memory();
   flush_screen();
-  prot_init();
+
+  prot_init(); /* Initialize GDT, IDT */
+  init_8259A(); /* Initialize PIC */
+
   hlt();
 }

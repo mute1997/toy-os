@@ -4,10 +4,12 @@
 
 void hwint_master() {
   printk("HW Interrupt");
+  __asm__ __volatile__ ("iret");
 }
 
 void interrupt() {
   printk("Interrupt");
+  __asm__ __volatile__ ("iret");
 }
 
 void hwint00(void){

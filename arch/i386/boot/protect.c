@@ -121,7 +121,7 @@ void switch_to_new_gdt() {
 void prot_load_selectors() {
   /* set new IDT */
   switch_to_new_idt();
-  printk("Setup idt...  [OK]"); /* TODO 改行コードをいい感じに出す */
+  printk("Setup idt...  [OK]");
 
   /* set new GDT */
   switch_to_new_gdt();
