@@ -7,7 +7,6 @@
 
 extern unsigned long _bss_start;
 extern unsigned long _bss_end;
-extern void setup_gdt();
 
 void setup_memory() {
   /* initialize bss section */
@@ -18,8 +17,14 @@ void setup() {
   setup_memory();
   flush_screen();
 
-  prot_init(); /* Initialize GDT, IDT, trap */
+  disable(); /* Disable interrupt */
+
   intr_init(); /* Initialize PIC */
+  prot_init(); /* Initialize GDT, IDT, trap */
+
+  /* TODO 割り込みハンドラをちゃんと書く */
+  /* TODO IDTがちゃんと登録されていないみたいで落ちる */
+  enable(); /* Enable interrupt */
 
   hlt();
 }

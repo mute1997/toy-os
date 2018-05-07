@@ -4,7 +4,7 @@
 #include <archtypes.h>
 #include <trap.h>
 
-#define load_gdt(dtr) __asm__ __volatile__ ("lgdt %0"::"m"(dtr))
+#define load_gdt(dtr) __asm__ __volatile__ ("lgdt %0"::"m"(*dtr))
 #define load_idt(dtr) __asm__ __volatile__("lidt %0"::"m" (*dtr))
 #define init_seg() __asm__ __volatile__ ("\n \
     mov %ds,%ax \n \
@@ -114,7 +114,7 @@ void switch_to_new_idt() {
 }
 
 void switch_to_new_gdt() {
-  load_gdt(gdt_desc);
+  load_gdt(&gdt_desc);
   init_seg();
 }
 
