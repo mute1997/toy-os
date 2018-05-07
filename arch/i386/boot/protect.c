@@ -6,6 +6,8 @@
 
 #define load_gdt(dtr) __asm__ __volatile__ ("lgdt %0"::"m"(*dtr))
 #define load_idt(dtr) __asm__ __volatile__("lidt %0"::"m" (*dtr))
+#define store_idt(dtr) __asm__ __volatile__("sidt %0":"=m" (*dtr))
+#define store_gdt(dtr) __asm__ __volatile__("sgdt %0":"=m" (*dtr))
 #define init_seg() __asm__ __volatile__ ("\n \
     mov %ds,%ax \n \
     mov %es,%ax \n \
