@@ -32,12 +32,15 @@ void i8259_disable() {
   inb(INT_CTLMASK);
 }
 
-/* TODO */
+/* End of interrupt for master */
 void eoi_8259_master() {
+  outb(INT_CTL, END_OF_INT);
 }
 
-/* TODO */
+/* End of interrupt for slave */
 void eoi_8259_slave() {
+  outb(INT_CTL, END_OF_INT);
+  outb(INT2_CTL, END_OF_INT);
 }
 
 void irq_8259_eoi(int irq) {
