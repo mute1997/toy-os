@@ -22,7 +22,7 @@ void intr_init() {
   // Mask interrupts
   outb(0x21, 0xFD);
   outb(0xA1, 0xFF);
-  printk("Initialize PIC... [OK]");
+  // printk("Initialize PIC... [OK]");
 }
 
 /* Disable master and slave */

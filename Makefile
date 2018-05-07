@@ -26,6 +26,8 @@ all:
 clean:
 	($(CD) $(KERNEL);$(MAKE) clean)
 
+run:
+	./scripts/run.sh
 
 # -----------------------------
 # QEMU

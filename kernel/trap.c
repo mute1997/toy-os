@@ -1,3 +1,5 @@
+/* TODO 割り込みハンドラはアセンブラで書くのでこのファイルはあとで消す*/
+
 #include <std/printk.h>
 #include <trap.h>
 

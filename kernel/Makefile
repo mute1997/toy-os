@@ -46,6 +46,7 @@ OBJS = $(BOOT_DIR)/loader.o \
 			$(KERNEL_DIR)/trap.o \
 			$(KERNEL_DIR)/arch/$(ARCH)/i8325.o \
 			$(KERNEL_DIR)/arch/$(ARCH)/io_intr.o \
+			$(KERNEL_DIR)/arch/$(ARCH)/mpx.o \
 			$(LIB_DIR)/vsprintf.o
 
 
