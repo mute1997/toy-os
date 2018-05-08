@@ -8,6 +8,9 @@
 #define INT2_CTL 0xA0
 #define INT2_CTLMASK 0xA1
 
+/* EOI */
+#define END_OF_INT 0x20
+
 /* Interrupt by processor */
 #define DIVIDE_VECTOR 0
 #define DEBUG_VECTOR 1
