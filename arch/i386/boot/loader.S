@@ -16,7 +16,7 @@ header_end:
 
 global start
 extern setup
-STACK_SIZE equ 0x1000
+STACK_SIZE equ 4096*4
 
 section .text
 start:

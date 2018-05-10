@@ -12,7 +12,7 @@ void intr_init() {
   outb(0xA0, 0x11);
   // ICW2 : specify interrupt numbers
   outb(0x21, 0x20);      // PIC1 = 0x20-0x27
-  outb(0xA1, 0x28);      // PIC2 = 0x28-0x2F
+  outb(0xA1, 0x70);      // PIC2 = 0x28-0x2F
   // ICW3 : set pin wired to master/slaves
   outb(0x21, 0x4);
   outb(0xA1, 0x2);
@@ -20,9 +20,9 @@ void intr_init() {
   outb(0x21, 0x1);
   outb(0xA1, 0x1);
   // Mask interrupts
-  outb(0x21, 0xFD);
-  outb(0xA1, 0xFF);
-  // printk("Initialize PIC... [OK]");
+  outb(0x21, 0x0);
+  outb(0xA1, 0x0);
+  printk("Initialize PIC... [OK]");
 }
 
 /* Disable master and slave */

@@ -23,35 +23,10 @@ void setup() {
   setup_memory();
   flush_screen();
 
-  disable(); /* Disable interrupt */
-
-  // TODO デバッグ用なのであとで消す
-  // -----------------------------
-  printk("[before initialize]");
-  unsigned long long ia, ga;
-  store_idt(&ia);
-  store_gdt(&ga);
-  printk("IDT = 0x%d", &ia);
-  printk("GDT = 0x%d", &ga);
-  printk("");
-  // -----------------------------
-
   intr_init(); /* Initialize PIC */
   prot_init(); /* Initialize GDT, IDT, trap */
 
-  /* TODO 割り込みハンドラをちゃんと書く */
-  /* TODO IDTがちゃんと登録されていないみたいで落ちる */
-  // enable(); /* Enable interrupt */
-
-  // TODO あとで消す
-  // -----------------------------
-  printk("");
-  printk("[after initialize]");
-  store_idt(&ia);
-  store_gdt(&ga);
-  printk("IDT = 0x%d", &ia);
-  printk("GDT = 0x%d", &ga);
-  // -----------------------------
+  __asm__ __volatile__ ("int3");
 
   hlt();
 }

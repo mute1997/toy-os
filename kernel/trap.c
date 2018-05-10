@@ -10,7 +10,6 @@ void hwint_master() {
 }
 
 void interrupt() {
-  printk("Interrupt");
   __asm__ __volatile__ ("iret");
 }
 
@@ -82,55 +81,55 @@ void bounds_check (void){
   interrupt();
 }
 void inval_opcode (void){
-  interrupt();
+  printk("inval opcode");
 }
 void copr_not_available (void){
-  interrupt();
+  printk("copr not available");
 }
 void double_fault(void){
-  interrupt();
+  printk("double fault");
 }
 void copr_seg_overrun(void){
-  interrupt();
+  printk("copr seg overrun");
 }
 void inval_tss(void){
-  interrupt();
+  printk("inval tss");
 }
 void segment_not_present(void){
-  interrupt();
+  printk("segment not present");
 }
 void stack_exception(void){
-  interrupt();
+  printk("stack exception");
 }
 void general_protection(void){
-  interrupt();
+  printk("general protection");
 }
 void page_fault(void){
-  interrupt();
+  printk("page fault");
 }
 void copr_error(void){
-  interrupt();
+  printk("copr error");
 }
 void alignment_check(void){
-  interrupt();
+  printk("alignment check");
 }
 void machine_check(void){
-  interrupt();
+  printk("machine check");
 }
 void simd_exception(void){
-  interrupt();
+  printk("simd exception");
 }
 
 /* software interrupt handlers */
 void ipc_entry_softint_orig(void){
-  interrupt();
+  printk("ipc entry softint orig");
 }
 void ipc_entry_softint_um(void){
-  interrupt();
+  printk("ipc entry softint um");
 }
 void kernel_call_entry_orig(void){
-  interrupt();
+  printk("kernel call entry orig");
 }
 void kernel_call_entry_um(void){
-  interrupt();
+  printk("kernel call entry um");
 }
