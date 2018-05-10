@@ -4,15 +4,10 @@
 #include <drivers/video.h>
 #include <asm/types.h>
 #include <proto.h>
+#include <trap.h>
 
 extern unsigned long _bss_start;
 extern unsigned long _bss_end;
-
-// TODO protect.cに定義しているのであとで消す
-// ------------------------
-#define store_idt(dtr) __asm__ __volatile__("sidt %0":"=m" (*dtr))
-#define store_gdt(dtr) __asm__ __volatile__("sgdt %0":"=m" (*dtr))
-// ------------------------
 
 void setup_memory() {
   /* initialize bss section */
@@ -26,7 +21,8 @@ void setup() {
   intr_init(); /* Initialize PIC */
   prot_init(); /* Initialize GDT, IDT, trap */
 
-  __asm__ __volatile__ ("int3");
+  // __asm__ __volatile__ ("int3");
+  printk("did not crash");
 
   hlt();
 }

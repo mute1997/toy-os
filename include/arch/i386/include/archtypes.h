@@ -60,7 +60,7 @@ struct desctableptr {
 } __attribute__((packed));
 
 struct gate_table {
-  void(*gate) (void);
+  void(*gate) (struct interrupt_frame *frame);
   u8 vec_nr;
   u8 privilege;
 };

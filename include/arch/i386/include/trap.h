@@ -44,47 +44,62 @@
 #define VECTOR(irq)    \
        (((irq) < 8 ? IRQ0_VECTOR : IRQ8_VECTOR) + ((irq) & 0x07))
 
+
+#ifdef __x86_64__
+  typedef unsigned long long int uword_t;
+#else
+  typedef unsigned int uword_t;
+#endif
+
+struct interrupt_frame {
+    uword_t ip;
+    uword_t cs;
+    uword_t flags;
+    uword_t sp;
+    uword_t ss;
+};
+
 /* hardware interrupt handlers */
-void hwint00(void);
-void hwint01(void);
-void hwint02(void);
-void hwint03(void);
-void hwint04(void);
-void hwint05(void);
-void hwint06(void);
-void hwint07(void);
-void hwint08(void);
-void hwint09(void);
-void hwint10(void);
-void hwint11(void);
-void hwint12(void);
-void hwint13(void);
-void hwint14(void);
-void hwint15(void);
+void hwint00(struct interrupt_frame *frame);
+void hwint01(struct interrupt_frame *frame);
+void hwint02(struct interrupt_frame *frame);
+void hwint03(struct interrupt_frame *frame);
+void hwint04(struct interrupt_frame *frame);
+void hwint05(struct interrupt_frame *frame);
+void hwint06(struct interrupt_frame *frame);
+void hwint07(struct interrupt_frame *frame);
+void hwint08(struct interrupt_frame *frame);
+void hwint09(struct interrupt_frame *frame);
+void hwint10(struct interrupt_frame *frame);
+void hwint11(struct interrupt_frame *frame);
+void hwint12(struct interrupt_frame *frame);
+void hwint13(struct interrupt_frame *frame);
+void hwint14(struct interrupt_frame *frame);
+void hwint15(struct interrupt_frame *frame);
 
 /* Exception handlers */
-void divide_error (void);
-void single_step_exception (void);
-void nmi (void);
-void breakpoint_exception (void);
-void overflow (void);
-void bounds_check (void);
-void inval_opcode (void);
-void copr_not_available (void);
-void double_fault(void);
-void copr_seg_overrun(void);
-void inval_tss(void);
-void segment_not_present(void);
-void stack_exception(void);
-void general_protection(void);
-void page_fault(void);
-void copr_error(void);
-void alignment_check(void);
-void machine_check(void);
-void simd_exception(void);
+void divide_error (struct interrupt_frame *frame);
+void single_step_exception (struct interrupt_frame *frame);
+void nmi (struct interrupt_frame *frame);
+void breakpoint_exception (struct interrupt_frame *frame);
+void overflow (struct interrupt_frame *frame);
+void bounds_check (struct interrupt_frame *frame);
+void inval_opcode (struct interrupt_frame *frame);
+void copr_not_available (struct interrupt_frame *frame);
+void double_fault(struct interrupt_frame *frame);
+void copr_seg_overrun(struct interrupt_frame *frame);
+void inval_tss(struct interrupt_frame *frame);
+void segment_not_present(struct interrupt_frame *frame);
+void stack_exception(struct interrupt_frame *frame);
+void general_protection(struct interrupt_frame *frame);
+void page_fault(struct interrupt_frame *frame);
+void copr_error(struct interrupt_frame *frame);
+void alignment_check(struct interrupt_frame *frame);
+void machine_check(struct interrupt_frame *frame);
+void simd_exception(struct interrupt_frame *frame);
 
 /* software interrupt handlers */
-void ipc_entry_softint_orig(void);
-void ipc_entry_softint_um(void);
-void kernel_call_entry_orig(void);
-void kernel_call_entry_um(void);
+void ipc_entry_softint_orig(struct interrupt_frame *frame);
+void ipc_entry_softint_um(struct interrupt_frame *frame);
+void kernel_call_entry_orig(struct interrupt_frame *frame);
+void kernel_call_entry_um(struct interrupt_frame *frame);

@@ -1,135 +1,124 @@
-/* TODO 割り込みハンドラはアセンブラで書くのでこのファイルはあとで消す*/
-
 #include <std/printk.h>
 #include <trap.h>
 
-
-void hwint_master() {
-  printk("HW Interrupt");
-  __asm__ __volatile__ ("iret");
+void hwint00(struct interrupt_frame *frame){
+  printk("hwint00");
+}
+void hwint01(struct interrupt_frame *frame){
+  printk("hwint01");
+}
+void hwint02(struct interrupt_frame *frame){
+  printk("hwint02");
+}
+void hwint03(struct interrupt_frame *frame){
+  printk("hwint03");
+}
+void hwint04(struct interrupt_frame *frame){
+  printk("hwint04");
+}
+void hwint05(struct interrupt_frame *frame){
+  printk("hwint05");
+}
+void hwint06(struct interrupt_frame *frame){
+  printk("hwint06");
+}
+void hwint07(struct interrupt_frame *frame){
+  printk("hwint07");
+}
+void hwint08(struct interrupt_frame *frame){
+  printk("hwint08");
+}
+void hwint09(struct interrupt_frame *frame){
+  printk("hwint09");
+}
+void hwint10(struct interrupt_frame *frame){
+  printk("hwint10");
+}
+void hwint11(struct interrupt_frame *frame){
+  printk("hwint11");
+}
+void hwint12(struct interrupt_frame *frame){
+  printk("hwint12");
+}
+void hwint13(struct interrupt_frame *frame){
+  printk("hwint13");
+}
+void hwint14(struct interrupt_frame *frame){
+  printk("hwint14");
+}
+void hwint15(struct interrupt_frame *frame){
+  printk("hwint15");
 }
 
-void interrupt() {
-  __asm__ __volatile__ ("iret");
+void divide_error (struct interrupt_frame *frame) {
+  printk("divide error");
 }
-
-void hwint00(void){
-  hwint_master();
+void single_step_exception (struct interrupt_frame *frame){
+  printk("single step exception");
 }
-void hwint01(void){
-  hwint_master();
+void nmi (struct interrupt_frame *frame){
+  printk("nmi");
 }
-void hwint02(void){
-  hwint_master();
+__attribute__((interrupt))
+void breakpoint_exception (struct interrupt_frame *frame){
+  printk("breakpoint exception");
 }
-void hwint03(void){
-  hwint_master();
+void overflow (struct interrupt_frame *frame){
+  printk("overflow");
 }
-void hwint04(void){
-  hwint_master();
+void bounds_check (struct interrupt_frame *frame){
+  printk("bounds check");
 }
-void hwint05(void){
-  hwint_master();
-}
-void hwint06(void){
-  hwint_master();
-}
-void hwint07(void){
-  hwint_master();
-}
-void hwint08(void){
-  hwint_master();
-}
-void hwint09(void){
-  hwint_master();
-}
-void hwint10(void){
-  hwint_master();
-}
-void hwint11(void){
-  hwint_master();
-}
-void hwint12(void){
-  hwint_master();
-}
-void hwint13(void){
-  hwint_master();
-}
-void hwint14(void){
-  hwint_master();
-}
-void hwint15(void){
-  hwint_master();
-}
-
-void divide_error (void) {
-  interrupt();
-}
-void single_step_exception (void){
-  interrupt();
-}
-void nmi (void){
-  interrupt();
-}
-void breakpoint_exception (void){
-  interrupt();
-}
-void overflow (void){
-  interrupt();
-}
-void bounds_check (void){
-  interrupt();
-}
-void inval_opcode (void){
+void inval_opcode (struct interrupt_frame *frame){
   printk("inval opcode");
 }
-void copr_not_available (void){
+void copr_not_available (struct interrupt_frame *frame){
   printk("copr not available");
 }
-void double_fault(void){
+void double_fault(struct interrupt_frame *frame){
   printk("double fault");
 }
-void copr_seg_overrun(void){
+void copr_seg_overrun(struct interrupt_frame *frame){
   printk("copr seg overrun");
 }
-void inval_tss(void){
+void inval_tss(struct interrupt_frame *frame){
   printk("inval tss");
 }
-void segment_not_present(void){
+void segment_not_present(struct interrupt_frame *frame){
   printk("segment not present");
 }
-void stack_exception(void){
+void stack_exception(struct interrupt_frame *frame){
   printk("stack exception");
 }
-void general_protection(void){
+void general_protection(struct interrupt_frame *frame){
   printk("general protection");
 }
-void page_fault(void){
+void page_fault(struct interrupt_frame *frame){
   printk("page fault");
 }
-void copr_error(void){
+void copr_error(struct interrupt_frame *frame){
   printk("copr error");
 }
-void alignment_check(void){
+void alignment_check(struct interrupt_frame *frame){
   printk("alignment check");
 }
-void machine_check(void){
+void machine_check(struct interrupt_frame *frame){
   printk("machine check");
 }
-void simd_exception(void){
+void simd_exception(struct interrupt_frame *frame){
   printk("simd exception");
 }
 
 /* software interrupt handlers */
-void ipc_entry_softint_orig(void){
+void ipc_entry_softint_orig(struct interrupt_frame *frame){
   printk("ipc entry softint orig");
 }
-void ipc_entry_softint_um(void){
+void ipc_entry_softint_um(struct interrupt_frame *frame){
   printk("ipc entry softint um");
 }
-void kernel_call_entry_orig(void){
+void kernel_call_entry_orig(struct interrupt_frame *frame){
   printk("kernel call entry orig");
 }
-void kernel_call_entry_um(void){
+void kernel_call_entry_um(struct interrupt_frame *frame){
   printk("kernel call entry um");
 }
