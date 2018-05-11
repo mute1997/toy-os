@@ -19,7 +19,7 @@ void setup() {
   flush_screen();
 
   prot_init(); /* Initialize GDT, IDT, trap */
-  intr_init(); /* Initialize PIC */
+  // intr_init(); /* Initialize PIC */
 
   // software interrupt
   __asm__ __volatile__ ("int3");

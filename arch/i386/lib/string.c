@@ -7,7 +7,7 @@ void *memset(void *s, int c, int n) {
   return s;
 }
 
-unsigned long strlen(const char *s) {
+unsigned long strlen(char *s) {
   char *ss;
   for (ss=s;*ss!='\0';ss++);
   return ss - s;

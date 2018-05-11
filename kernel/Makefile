@@ -14,7 +14,8 @@ CFLAGS = \
 				 -I ../include/arch/$(ARCH)/include \
 				 -I ../kernel \
 				 -m32 \
-				 -fno-stack-protector
+				 -fno-stack-protector \
+				 -mno-sse
 LD     = ld
 LDFLAGS = -nostdlib -Map ../build/kernel.map -m elf_i386
 LDSCRIPT = ../scripts/kernel.ld

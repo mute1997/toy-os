@@ -1,8 +1,8 @@
 #include <asm/types.h>
 #include <std/printk.h>
 #include <std/string.h>
-#include <archtypes.h>
 #include <trap.h>
+#include <archtypes.h>
 
 #define load_idt(dtr) __asm__ __volatile__("lidt %0"::"m" (*dtr))
 #define store_idt(dtr) __asm__ __volatile__("sidt %0":"=m" (*dtr))
