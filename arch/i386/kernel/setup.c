@@ -18,17 +18,11 @@ void setup() {
   setup_memory();
   flush_screen();
 
+  intr_init(); /* Initialize PIC */
   prot_init(); /* Initialize GDT, IDT, trap */
-  // intr_init(); /* Initialize PIC */
 
   // software interrupt
   __asm__ __volatile__ ("int3");
-
-  // TODO IRQ
-
-  // TODO Exception
-
-  printk("halting...");
 
   hlt();
 }
