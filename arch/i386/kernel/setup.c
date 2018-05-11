@@ -21,7 +21,7 @@ void setup() {
   intr_init(); /* Initialize PIC */
   prot_init(); /* Initialize GDT, IDT, trap */
 
-  // __asm__ __volatile__ ("int3");
+  __asm__ __volatile__ ("int3");
   printk("did not crash");
 
   hlt();
