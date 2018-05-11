@@ -21,7 +21,15 @@ void setup() {
   intr_init(); /* Initialize PIC */
   prot_init(); /* Initialize GDT, IDT, trap */
 
+  // software interrupt
   __asm__ __volatile__ ("int3");
+
+  // TODO IRQ
+
+  // TODO Exception
+  int a = 10 / 0;
+  printk("%d",a);
+
   printk("did not crash");
 
   hlt();
