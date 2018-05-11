@@ -1,10 +1,6 @@
-# Install
-## Linux
-$ make  
-$ make image  
-$ make qemu  
+# MutexOS
+mutexos is full scratched simple kernel.  
+(except bootloader)  
 
-## MacOS
-$ make build-docker  
-$ make  osx  
-$ make qemu
+# QEMU
+$ make run  
