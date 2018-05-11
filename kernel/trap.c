@@ -61,7 +61,6 @@ void nmi (struct interrupt_frame *frame){
 }
 __attribute__((interrupt))
 void breakpoint_exception (struct interrupt_frame *frame){
-  // TODO スタックフレームの表示
   printk("breakpoint exception");
 }
 void overflow (struct interrupt_frame *frame){
