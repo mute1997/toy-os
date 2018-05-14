@@ -1,8 +1,7 @@
 #include <std/stdarg.h>
 #include <std/string.h>
 
-char *number(char *buf, char*end, unsigned long num) {
-  int base = 10;
+char *number(char *buf, char*end, unsigned long num, int base) {
   char *digits = "0123456789abcdefghijklmnopqrstuvwxyz";
   char *str;
   char *tmp[64];
@@ -42,7 +41,11 @@ int vsnprintf(char *buf, unsigned long size, const char *fmt, va_list args) {
     switch (*fmt) {
       case 'd':
         num = va_arg(args, unsigned int);
-        str = number(str, end, num);
+        str = number(str, end, num, 10);
+        break;
+      case 'x':
+        num = va_arg(args, unsigned int);
+        str = number(str, end, num, 16);
         break;
       case 's':
         s = va_arg(args, char*);
