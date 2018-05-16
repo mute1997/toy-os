@@ -5,8 +5,10 @@ SECTIONS {
 
     .text :
     {
-        *(.multiboot_header)
-        *(.text)
+      _text_start = .;
+      *(.multiboot_header)
+      *(.text)
+      _text_end = .;
     }
 
     .rodata :
