@@ -30,7 +30,7 @@ BOOT_DIR=$(ARCH_DIR)/$(ARCH)/boot
 DRIVER_DIR=../drivers
 KERNEL_DIR=.
 LIB_DIR=../lib
-MM_DIR=$(ARCH_DIR)/$(ARCH)/mm
+MM_DIR=../mm
 
 # output
 BUILD_DIR=../build
@@ -51,8 +51,7 @@ OBJS = $(BOOT_DIR)/loader.o \
 			$(KERNEL_DIR)/arch/$(ARCH)/io_intr.o \
 			$(KERNEL_DIR)/arch/$(ARCH)/klib.o \
 			$(LIB_DIR)/vsprintf.o \
-			$(MM_DIR)/init.o \
-			$(MM_DIR)/mmap.o
+			$(MM_DIR)/init.o
 
 
 %.o : %.c

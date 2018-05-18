@@ -28,4 +28,6 @@ SECTIONS {
       _bss_end = .;
     }
 
+	PROVIDE(_kernel_end = .);
+
 }

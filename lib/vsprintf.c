@@ -16,6 +16,12 @@ char *number(char *buf, char*end, unsigned long num, int base) {
     }
   }
 
+  // padding zero
+  // for(int j=0;j<sizeof(unsigned long long)-i;j++) {
+  //   *buf='0';
+  //   ++buf;
+  // }
+
   while(i-- > 0) {
     if (buf <= end) *buf = tmp[i];
     ++buf;
