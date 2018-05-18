@@ -6,46 +6,29 @@
 
 extern unsigned long _bss_start;
 extern unsigned long _bss_end;
-extern unsigned long _text_start;
 extern unsigned long _kernel_end;
 
-int is_kernel_section(u32 addr) {
-  // if(&_text_start < addr && addr > &_kernel_end) {
-  //   // printk("outside kernel");
-  // }
-  return (&_text_start < addr && addr > &_kernel_end);
+int is_kernel_section(u32 addr);
+int find_free_page();
+void freerange(u32 addr, u32 length);
+void print_mmap(multiboot_memory_map_t *mmap);
+
+static struct page pages[PHYS_PAGETABLE_SIZE];
+
+/* ----------------------------- */
+/* 別にinit処理ではないので別ファイルに切り出す */
+/* ----------------------------- */
+void virt_to_page(u32 addr) {
 }
 
-u32* kalloc(u32 addr) {
-  /* 空きを探してポインタを返す */
+void kalloc(struct page *p) {
+  /* count=0 かつ phys_mem!=NULLなpageを探す */
 }
 
 void kfree(u32 addr) {
-  /* addrを1埋めする */
+  /* virt_to_pageしてcount=0する */
 }
-
-int freerange(u32 addr, u32 length) {
-  u32 *index;
-  u32 limit = addr+length;
-
-  for (index=(void*)addr;index<limit;index++) {
-    if (is_kernel_section(index)) continue;
-    // TODO reservedなメモリの範囲が入らないように確認
-    // TODO すでに1で埋まっていないか確認
-    // *index=0;
-  }
-  return 1;
-}
-
-void print_mmap(multiboot_memory_map_t *mmap) {
-  printk (" base_addr = 0x%x%x,"
-      " length = 0x%x%x, type = 0x%x",
-      (unsigned) (mmap->addr>>32),
-      (unsigned) (mmap->addr&0xFFFFFFFF),
-      (unsigned) (mmap->len>>32),
-      (unsigned) (mmap->len&0xFFFFFFFF),
-      (unsigned) mmap->type);
-}
+/* ----------------------------- */
 
 void setup_physical_memory(u32 addr) {
   struct multiboot_tag *tag;
@@ -67,9 +50,8 @@ void setup_physical_memory(u32 addr) {
               ((unsigned long) mmap
                + ((struct multiboot_tag_mmap *) tag)->entry_size)) {
 
-            /* mmap->typeが1かつ 32bit以内 */
-            if (mmap->type == 1 && MEMORY_HIGH_LIMIT > mmap->addr) {
-              print_mmap(mmap);
+            /* RAM Available && less than 32bit && dont use top */
+            if (mmap->type == 1 && MEMORY_HIGH_LIMIT > mmap->addr && mmap->addr != 0x0) {
               freerange(mmap->addr, mmap->len);
             }
           }
@@ -77,9 +59,55 @@ void setup_physical_memory(u32 addr) {
         break;
     }
   }
-  printk("Setup Memory... [OK]");
+
+  printk("  page[0] phys_mem: 0x%x count: %d", pages[0].phys_mem, pages[0].count);
+  printk("  page[1] phys_mem: 0x%x count: %d", pages[1].phys_mem, pages[1].count);
+  printk("  page[2] phys_mem: 0x%x count: %d", pages[2].phys_mem, pages[2].count);
+  printk("Setup Physical Memory... [OK]");
 }
 
 void setup_heap() {
   memset((void *)_bss_start, 0x00, _bss_end-_bss_start);
+}
+
+int is_kernel_section(u32 addr) {
+  return &_kernel_end < addr && &_kernel_end < addr+PAGE_SIZE;
+}
+
+/* return free page offset, witch found the first */
+int find_free_page() {
+  int i;
+  int offset=-1;
+  for (i=0;i<PHYS_PAGETABLE_SIZE;i++) {
+    if (pages[i].phys_mem == NULL && pages[i].count == 0) {
+      offset=i;
+      break;
+    }
+  }
+  return offset;
+}
+
+void freerange(u32 addr, u32 length) {
+  u32 page_addr;
+  int offset;
+
+  offset=find_free_page();
+  for(page_addr=addr;page_addr<addr+length;page_addr+=PAGE_SIZE) {
+    if (!(is_kernel_section(page_addr))) continue;
+
+    pages[offset].count=0;
+    pages[offset].phys_mem=(void*)page_addr;
+    pages[offset].virt_mem=NULL;
+    offset+=1;
+  }
+}
+
+void print_mmap(multiboot_memory_map_t *mmap) {
+  printk (" base_addr = 0x%x%x,"
+      " length = 0x%x%x, type = 0x%x",
+      (unsigned) (mmap->addr>>32),
+      (unsigned) (mmap->addr&0xFFFFFFFF),
+      (unsigned) (mmap->len>>32),
+      (unsigned) (mmap->len&0xFFFFFFFF),
+      (unsigned) mmap->type);
 }

@@ -37,7 +37,7 @@ image:
 	grub-mkrescue -o $(BUILD_DIR)/mutex.iso iso
 
 qemu:
-	qemu-system-i386 -m 16G -cdrom $(BUILD_DIR)/mutex.iso &
+	qemu-system-i386 -cdrom $(BUILD_DIR)/mutex.iso &
 
 
 # -----------------------------
