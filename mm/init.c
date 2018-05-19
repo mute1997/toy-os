@@ -13,22 +13,7 @@ int find_free_page();
 void freerange(u32 addr, u32 length);
 void print_mmap(multiboot_memory_map_t *mmap);
 
-static struct page pages[PHYS_PAGETABLE_SIZE];
-
-/* ----------------------------- */
-/* 別にinit処理ではないので別ファイルに切り出す */
-/* ----------------------------- */
-void virt_to_page(u32 addr) {
-}
-
-void kalloc(struct page *p) {
-  /* count=0 かつ phys_mem!=NULLなpageを探す */
-}
-
-void kfree(u32 addr) {
-  /* virt_to_pageしてcount=0する */
-}
-/* ----------------------------- */
+struct page pages[PHYS_PAGETABLE_SIZE];
 
 void setup_physical_memory(u32 addr) {
   struct multiboot_tag *tag;
@@ -59,10 +44,6 @@ void setup_physical_memory(u32 addr) {
         break;
     }
   }
-
-  printk("  page[0] phys_mem: 0x%x count: %d", pages[0].phys_mem, pages[0].count);
-  printk("  page[1] phys_mem: 0x%x count: %d", pages[1].phys_mem, pages[1].count);
-  printk("  page[2] phys_mem: 0x%x count: %d", pages[2].phys_mem, pages[2].count);
   printk("Setup Physical Memory... [OK]");
 }
 
@@ -71,11 +52,11 @@ void setup_heap() {
 }
 
 int is_kernel_section(u32 addr) {
-  return &_kernel_end < addr && &_kernel_end < addr+PAGE_SIZE;
+  return &_kernel_end < (u32*)addr && &_kernel_end < (u32*)(addr+PAGE_SIZE);
 }
 
 /* return free page offset, witch found the first */
-int find_free_page() {
+int find_unused_page() {
   int i;
   int offset=-1;
   for (i=0;i<PHYS_PAGETABLE_SIZE;i++) {
@@ -91,13 +72,14 @@ void freerange(u32 addr, u32 length) {
   u32 page_addr;
   int offset;
 
-  offset=find_free_page();
+  offset=find_unused_page();
   for(page_addr=addr;page_addr<addr+length;page_addr+=PAGE_SIZE) {
     if (!(is_kernel_section(page_addr))) continue;
 
     pages[offset].count=0;
     pages[offset].phys_mem=(void*)page_addr;
     pages[offset].virt_mem=NULL;
+
     offset+=1;
   }
 }

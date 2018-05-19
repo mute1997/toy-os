@@ -10,9 +10,9 @@
 
 extern void load_gdt(u32 desc_struct);
 
-static struct desctableptr gdt_desc, idt_desc;
-static struct desc_struct gdt[GDT_ENTRIES]; /* GDT */
-static struct gatedesc idt[IDT_SIZE]; /* IDT */
+struct desctableptr gdt_desc, idt_desc;
+struct desc_struct gdt[GDT_ENTRIES]; /* GDT */
+struct gatedesc idt[IDT_SIZE]; /* IDT */
 
 static struct gate_table gate_table_pic[] = {
 	{ hwint00, VECTOR( 0), INTR_PRIVILEGE },
