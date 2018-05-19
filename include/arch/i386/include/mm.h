@@ -15,9 +15,11 @@ struct memory_map {
   u32 *phys_end;
 };
 
+/* init */
 void setup_physical_memory(u32 addr);
 void setup_heap(void);
 
+/* page_alloc */
 int phys_to_page(u32 *addr);
 u32 *alloc_page();
 void free_page(u32 *addr);
