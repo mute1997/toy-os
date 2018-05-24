@@ -6,7 +6,6 @@ extern unsigned long _kernel_end;
 
 int find_free_page() {
   int i;
-  int offset=-1;
   for (i=0;i<PHYS_PAGETABLE_SIZE;i++) {
     if (pages[i].phys_mem != NULL && pages[i].count == 0) {
       return i;

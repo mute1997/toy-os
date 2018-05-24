@@ -14,10 +14,10 @@ void setup(u32 magic, u32 addr) {
 
   setup_heap();
   flush_screen();
-
+  
   intr_init(); /* Initialize PIC */
   prot_init(); /* Initialize GDT, IDT, trap */
-  setup_physical_memory(addr); /* fill 1 to physical memory */
-
+  // setup_physical_memory(addr); /* fill 1 to physical memory */ /* FIXME */
+  
   hlt();
 }

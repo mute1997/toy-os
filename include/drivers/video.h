@@ -1,4 +1,4 @@
-#define	VRAM_MODE	0x000B8000
+#define	VRAM_MODE	0xC00B8000
 #define COLOR_LIGHTGREY 0x07
 
 void flush_screen(void);

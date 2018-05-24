@@ -1,27 +1,27 @@
 ENTRY(start)
 
 SECTIONS {
-    . = 1M;
+    . = 0xC0100000;
 
-    .text :
+    .text : AT(ADDR(.text) - 0xC0000000)
     {
       _text_start = .;
-      *(.multiboot_header)
+      *(.multiboot)
       *(.text)
       _text_end = .;
     }
 
-    .rodata :
+    .rodata : AT(ADDR(.rodata) - 0xC0000000)
     {
       *(.rodata)
     }
 
-    .data :
+    .data : AT(ADDR(.data) - 0xC0000000)
     {
       *(.data)
     }
 
-    bss :
+    .bss : AT(ADDR(.bss) - 0xC0000000)
     {
       _bss_start = .;
       *(.bss)
