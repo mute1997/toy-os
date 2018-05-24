@@ -1,12 +1,32 @@
-section .multiboot_header
+extern multiboot_addr
+extern _bss_start
+extern _kernel_end
+global start
+
+section .multiboot
 header_start:
   dd 0xe85250d6                ; magic number (multiboot 2)
   dd 0                         ; architecture 0 (protected mode i386)
-
   dd header_end - header_start ; header length
+  dd -(0xe85250d6 + 0 + (header_end - header_start)) ; checksum
 
-  ; checksum
-  dd -(0xe85250d6 + 0 + (header_end - header_start))
+  ; ; address header
+  ; dw 2, 0
+  ; dd 8+16
+  ; dd header_start
+  ; dd multiboot_addr - KERNEL_VIRTUAL_BASE
+  ; dd _bss_start - KERNEL_VIRTUAL_BASE
+  ; dd _kernel_end - KERNEL_VIRTUAL_BASE
+  ;
+  ; ; entry point tag
+  ; dw 3,0
+  ; dd 8+4
+  ; dd start - KERNEL_VIRTUAL_BASE
+  ;
+  ; ; module aligment tag
+  ; dw 6,0
+  ; dd 12
+  ; dd 0
 
   ; required end tag
   dw 0    ; type
@@ -33,10 +53,10 @@ section .text
   STACK_SIZE equ 4096*4
 
   ; Entry point
-  start equ (_start - 0xC0000000)
-  global start
+  ; start equ (_start - 0xC0000000)
+  ; global start
 
-_start:
+start:
   mov ecx, (boot_page_directory - KERNEL_VIRTUAL_BASE)
   mov cr3, ecx
 
@@ -57,16 +77,16 @@ start_higher_half:
 
   mov esp, stack+STACK_SIZE
 
-  add ebx, KERNEL_VIRTUAL_BASE
+  ; add ebx, KERNEL_VIRTUAL_BASE
   push ebx
 
-  add eax, KERNEL_VIRTUAL_BASE
+  ; add eax, KERNEL_VIRTUAL_BASE
   push eax
 
   call setup
 
   hlt
 
-section.bss
+section .bss
 stack:
   resb STACK_SIZE

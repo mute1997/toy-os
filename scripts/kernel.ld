@@ -1,12 +1,19 @@
 ENTRY(start)
 
 SECTIONS {
-    . = 0xC0100000;
+	  /* . = 0x100000;                      */
+   /*  multiboot_addr = .;               */
+   /*  .multiboot : AT(ADDR(.multiboot)) */
+   /*  {                                 */
+   /*    *(.multiboot)                   */
+   /*  }                                 */
+
+    . += 0xC0100000;
 
     .text : AT(ADDR(.text) - 0xC0000000)
     {
       _text_start = .;
-      *(.multiboot_header)
+      *(.multiboot)
       *(.text)
       _text_end = .;
     }
@@ -21,7 +28,7 @@ SECTIONS {
       *(.data)
     }
 
-    bss : AT(ADDR(bss) - 0xC0000000)
+    .bss : AT(ADDR(.bss) - 0xC0000000)
     {
       _bss_start = .;
       *(.bss)
