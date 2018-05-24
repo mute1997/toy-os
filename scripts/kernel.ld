@@ -1,13 +1,6 @@
 ENTRY(start)
 
 SECTIONS {
-	  /* . = 0x100000;                      */
-   /*  multiboot_addr = .;               */
-   /*  .multiboot : AT(ADDR(.multiboot)) */
-   /*  {                                 */
-   /*    *(.multiboot)                   */
-   /*  }                                 */
-
     . += 0xC0100000;
 
     .text : AT(ADDR(.text) - 0xC0000000)
