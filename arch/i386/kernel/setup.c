@@ -11,8 +11,8 @@
 void setup(u32 magic, u32 addr) {
   if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) printk("invalid magic number");
   if (addr & 7) printk("unaligned mbi");
-  
-  setup_heap(); /* FIXME */
+
+  setup_heap();
   flush_screen();
   
   intr_init(); /* Initialize PIC */
