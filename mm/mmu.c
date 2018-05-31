@@ -6,3 +6,7 @@ pd_entry pde[1024];
 u32 virt_to_phys(u32 *virt) {
   return (*virt & VM_ADDR_MASK);
 }
+
+/* TODO */
+pd_entry one_page_table_init() {
+}
