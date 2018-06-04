@@ -1,5 +1,19 @@
-#define MEMORY_HIGH_LIMIT 0x00EFFFFF
+#include <asm/types.h>
+
+extern u32 _kernel_end;
+extern u32 _text_end;
+
+#define KERNEL_VIRTUAL_BASE 0xC0000000
+#define KERNEL_VIRTUAL_START &_text_end
+#define KERNEL_VIRTUAL_END &_kernel_end
+
+#define MEMORY_HIGH_LIMIT 0xFFFFFFFF
+
 #define PAGE_SIZE (1024*4) /* 4KB */
+#define PAGE_SHIFT 12
+#define PGDIR_SHIFT 22
+#define PTRS_PER_PGD 1024
+#define PTRS_PER_PTE 1024
 #define PHYS_PAGETABLE_SIZE 1048456 /* 4GB / PAGE_SIZE */
 #define MMAP_TABLE_SIZE 256 /* mmap table size */
 
@@ -22,8 +36,18 @@
 #define _VM_INIT_USER (VM_RW | VM_PRESENT | VM_USER)
 #define _VM_INIT_KERN (VM_RW | VM_PRESENT)
 
-/* TODO #define pgd_index() */
-/* TODO #define pte_index() */
+#define pde_index(addr) (((addr) >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1))
+#define pte_index(addr) (((addr) >> PAGE_SHIFT) & (PTRS_PER_PTE - 1))
+
+#define write_cr3(x) __asm__ __volatile__ ("movl %0,%%cr3": :"r" (x))
+#define write_cr0(x) __asm__ __volatile__ ("movl %0,%%cr0": :"r" (x))
+#define read_cr0() ({\
+      u32 __ret; \
+      __asm__ __volatile__ ( \
+        "movl %%cr3,%0\n\t" \
+        :"=r" (__ret)); \
+        __ret; \
+        })
 
 typedef u32 pt_entry;
 typedef u32 pd_entry;
@@ -44,4 +68,6 @@ u32 *alloc_page();
 void free_page(u32 *addr);
 
 /* mmu */
-virt_to_phys(u32 *virt);
+u32 virt_to_phys(u32 *virt);
+void init_paging();
+void enable_paging();

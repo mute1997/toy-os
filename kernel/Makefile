@@ -52,7 +52,8 @@ OBJS = $(BOOT_DIR)/loader.o \
 			$(KERNEL_DIR)/arch/$(ARCH)/klib.o \
 			$(LIB_DIR)/vsprintf.o \
 			$(MM_DIR)/init.o \
-			$(MM_DIR)/page_alloc.o
+			$(MM_DIR)/page_alloc.o \
+			$(MM_DIR)/mmu.o
 
 
 %.o : %.c
