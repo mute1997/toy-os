@@ -1,4 +1,5 @@
 #include <std/printk.h>
+#include <std/hlt.h>
 #include <trap.h>
 
 __attribute__((interrupt))
@@ -125,6 +126,7 @@ void general_protection(struct interrupt_frame *frame){
 __attribute__((interrupt))
 void page_fault(struct interrupt_frame *frame){
   printk("page fault");
+  hlt();
 }
 __attribute__((interrupt))
 void copr_error(struct interrupt_frame *frame){
