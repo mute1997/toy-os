@@ -42,15 +42,15 @@ void intr_init() {
   outb(PIC_MASTER_DATA, 0x01); /* Non buffer mode */
 
   // /* mask all irq */
-  // outb(PIC_MASTER_DATA, 0xff);
-  // outb(PIC_SLAVE_DATA, 0xff);
+  outb(PIC_MASTER_DATA, 0xff);
+  outb(PIC_SLAVE_DATA, 0xff);
 
   /* enable keyboard */
   /* TODO remove later */
   outb(PIC_MASTER_IMR, 0xfd);
   outb(PIC_SLAVE_IMR, 0xff);
 
-  __asm__ __volatile__ ("sti");
+  enable_intr();
 
   printk("Initialize PIC... [OK]");
 }

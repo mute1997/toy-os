@@ -1,7 +1,7 @@
-void enable() {
+void enable_intr() {
   __asm__ __volatile__ ("sti");
 }
 
-void disable() {
+void disable_intr() {
   __asm__ __volatile__ ("cli");
 }
