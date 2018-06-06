@@ -16,21 +16,13 @@ void enable_paging() {
 
 /* TODO */
 void init_paging() {
-  // printk("page_directory      0x%x", page_directory);
-  // printk("page_table          0x%x", page_table);
-  // printk("");
-
   /* mapping KERNEL_VIRTUAL_BASE - KERNEL_VIRTUAL_END */
-  int index=0;
-  // for(u32 addr=KERNEL_VIRTUAL_BASE;addr<MEMORY_HIGH_LIMIT;addr+=((sizeof(u32)*8)*PTRS_PER_PGD)) {
-  for(u32 addr=KERNEL_VIRTUAL_BASE;addr<MEMORY_HIGH_LIMIT;addr+=((sizeof(u32))*PTRS_PER_PGD)) {
-    // printk("pde: %d,  pte: %d", pde_index(addr), pte_index(addr));
-    // if (pte_index(addr) > 1022) {
-    //   printk("pde: %d,  pte: %d", pde_index(addr), pte_index(addr));
+  for(u32 addr=KERNEL_VIRTUAL_BASE;addr<KERNEL_VIRTUAL_END;addr+=((sizeof(u32))*PTRS_PER_PGD)) {
+    printk("pde: %d,  pte: %d", pde_index(addr), pte_index(addr));
+    // if (addr==KERNEL_VIRTUAL_BASE+(((sizeof(u32))*PTRS_PER_PGD))*5) {
+    //   break;
     // }
-    index++;
   }
-  printk("last index %d", index/1024);
 
   // write_cr3(page_directory);
 
