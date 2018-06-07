@@ -15,13 +15,13 @@ void setup(u32 magic, u32 addr) {
 
   printk("grub info           0x%x", &addr);
 
-  init_paging(); /* Initialize paging (KERNEL_VIRTUAL_BASE - KERNEL_VIRTUAL_END) */
-
   // setup_heap();
   flush_screen();
   
   intr_init(); /* Initialize PIC */
   prot_init(); /* Initialize GDT, IDT, trap */
+
+  init_paging(); /* Initialize paging (KERNEL_VIRTUAL_BASE - KERNEL_VIRTUAL_END) */
 
   // setup_physical_memory(addr); /* fill 1 to physical memory */
   

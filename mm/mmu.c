@@ -2,7 +2,7 @@
 #include <std/printk.h>
 
 extern pd_entry page_directory[1024];
-extern pt_entry page_table[1024][1024];
+static pt_entry page_table[1024][1024];
 
 u32 virt_to_phys(u32 *virt) {
   return (*virt & VM_ADDR_MASK);
@@ -17,12 +17,16 @@ void enable_paging() {
 /* TODO */
 void init_one_pde(u32 base_addr) {
   printk("PDE addr: 0x%x, index: %d", base_addr, pde_index(base_addr));
+
+  int pde_index = pde_index(base_addr);
   for (int i=0;i<1024;i++) {
     u32 addr = base_addr+(i*sizeof(u32)*PTRS_PER_PTE);
+    // TODO
+    page_table[pde_index][pte_index(addr)] = addr;
 
     /* --- for Debug ------- */
     if (i == 1023 || i == 0)
-      printk("  addr: 0x%x, index: %d", addr, i);
+      printk("  addr: 0x%x, index: %d, pde_index: %d, pte_index: %d", addr, i, pde_index, pte_index(addr));
     /* --------------------- */
   }
 
@@ -32,7 +36,8 @@ void init_one_pde(u32 base_addr) {
   printk("");
   /* --------------------- */
 
-  page_directory[pde_index(base_addr)];
+  // TODO
+  // page_directory[pde_index(base_addr)] = page_table[pde_index];
 }
 
 /* mapping KERNEL_VIRTUAL_BASE - MEMORY_HIGH_LIMIT */
@@ -43,13 +48,11 @@ void init_paging() {
     init_one_pde(addr);
   }
 
+  page_table[1023][1023];
+  // printk("pagetable 0x%x", page_table[1023][1023]);
+
   /* TODO */
   // write_cr3(page_directory);
-
-  page_table[0][0] = 1;
-  page_table[1023][1023] = 1;
-  printk("   0:   0 0x%x", page_table[0][0]);
-  // printk("1023:1023 0x%x", page_table[1023][1023]);
 
   printk("Setup paging... [OK]");
 }
