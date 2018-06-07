@@ -36,7 +36,7 @@ extern u32 _text_end;
 #define _VM_INIT_USER (VM_RW | VM_PRESENT | VM_USER)
 #define _VM_INIT_KERN (VM_RW | VM_PRESENT)
 
-#define pde_index(addr) (((addr) >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1))
+#define pde_index(addr) (((addr) >> PGDIR_SHIFT))
 #define pte_index(addr) (((addr) >> PAGE_SHIFT) & (PTRS_PER_PTE - 1))
 
 #define write_cr3(x) __asm__ __volatile__ ("movl %0,%%cr3": :"r" (x))

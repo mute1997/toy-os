@@ -26,7 +26,7 @@ page_directory:
   dd 0x00000083
   times (1024 - KERNEL_PAGE_NUMBER - 1) dd 0
 page_table:
-  times 4096 dd 0
+  times 4096*4096 dd 0
 
 section .text
   ; kernel entry function
