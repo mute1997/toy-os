@@ -69,5 +69,5 @@ void free_page(u32 *addr);
 
 /* mmu */
 u32 virt_to_phys(u32 *virt);
-void init_paging();
 void enable_paging();
+void init_boot_paging();
