@@ -23,8 +23,7 @@ align 0x1000
 page_directory:
   dd 0x00000083
   times (KERNEL_PAGE_NUMBER - 1) dd 0
-  dd 0x00000083
-  times (1024 - KERNEL_PAGE_NUMBER - 1) dd 0
+  times (1024 - KERNEL_PAGE_NUMBER) dd 0x00000083
 
 section .text
   ; kernel entry function
