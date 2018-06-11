@@ -53,11 +53,8 @@ start_higher_half:
 
   mov esp, stack+STACK_SIZE
 
-  add ebx, KERNEL_VIRTUAL_BASE
   push ebx
-
   push eax
-
   call setup
 
   hlt

@@ -16,10 +16,16 @@ void print_mmap(multiboot_memory_map_t *mmap);
 struct page pages[PHYS_PAGETABLE_SIZE];
 
 void setup_physical_memory(u32 addr) {
+  u32 virt_addr = 0x0;
+  u32 grub_size = (124*1024)/4;
   struct multiboot_tag *tag;
   multiboot_memory_map_t *mmap;
 
-  for (tag = (struct multiboot_tag *) (addr + 8);
+  /* map 124MB for grub */
+  map_page((void*)addr, (void*)virt_addr, grub_size);
+
+  /* search free memory */
+  for (tag = (struct multiboot_tag *) (virt_addr + 8);
       tag->type != MULTIBOOT_TAG_TYPE_END;
       tag = (struct multiboot_tag *) ((multiboot_uint8_t *) tag 
         + ((tag->size + 7) & ~7)))
@@ -37,6 +43,7 @@ void setup_physical_memory(u32 addr) {
 
             /* RAM Available && less than 32bit && dont use top */
             if (mmap->type == 1 && MEMORY_HIGH_LIMIT > mmap->addr && mmap->addr != 0x0) {
+              print_mmap(mmap);
               freerange(mmap->addr, mmap->len);
             }
           }
@@ -44,6 +51,9 @@ void setup_physical_memory(u32 addr) {
         break;
     }
   }
+
+  unmap_page((void*)virt_addr, grub_size);
+
   printk("Setup Physical Memory... [OK]");
 }
 

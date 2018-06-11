@@ -69,3 +69,5 @@ void free_page(u32 *addr);
 
 /* mmu */
 u32 virt_to_phys(u32 *virt);
+void map_page(u32 *phys_addr, u32 *virt_addr, u32 size);
+void unmap_page(u32 *virt_addr, u32 size);
