@@ -17,10 +17,12 @@ void setup(u32 magic, u32 addr) {
   setup_heap();
   flush_screen();
   
-  intr_init(); /* Initialize PIC */
   prot_init(); /* Initialize GDT, IDT, trap */
 
   setup_physical_memory(addr); /* search free memory by grub info */
   
+  // FIXME issue #4
+  // intr_init(); /* Initialize PIC */
+
   hlt();
 }
