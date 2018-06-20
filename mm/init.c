@@ -15,6 +15,10 @@ void print_mmap(multiboot_memory_map_t *mmap);
 
 struct page pages[PHYS_PAGETABLE_SIZE];
 
+/* TODO */
+void init_kern_pages() {
+}
+
 void setup_physical_memory(u32 addr) {
   u32 virt_addr = 0x0;
   u32 grub_size = (124*1024)/4;

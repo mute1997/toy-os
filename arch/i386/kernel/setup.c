@@ -12,6 +12,8 @@ void setup(u32 magic, u32 addr) {
   if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) printk("invalid magic number");
   if (addr & 7) printk("unaligned mbi");
 
+  init_kern_pages(); /* Init page 3GB to 4GB for kernel */
+
   setup_heap();
   flush_screen();
   

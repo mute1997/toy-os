@@ -59,6 +59,7 @@ struct page {
 };
 
 /* init */
+void init_kern_pages();
 void setup_physical_memory(u32 addr);
 void setup_heap(void);
 

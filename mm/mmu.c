@@ -2,7 +2,7 @@
 #include <std/printk.h>
 
 extern pd_entry page_directory[1024];
-pt_entry page_table[1024][1024];
+pt_entry page_table[1024][1024] __attribute__((aligned(4096)));
 
 u32 virt_to_phys(u32 *virt) {
   return (*virt & VM_ADDR_MASK);
@@ -15,14 +15,13 @@ void map_page(u32 *phys_addr, u32 *virt_addr, u32 size) {
 
   // MEMO: 
   // Grub address = 0x1908280
-
-  /* 4MB paging*/
-  // page_directory[pd_index] = (((u32)phys_addr) & 0xFFC00000) | VM_PRESENT | VM_RW | VM_PS;
+  
+  // TODO すべての仮想アドレスが0x0を向いてるので直す
+  // init_kern_pagesを実装ス
 
   /* setting up page table entry */
   page_table[pd_index][pt_index] = ((u32)phys_addr & 0xFFFFF000) |  VM_PRESENT | VM_RW;
   
-  // TODO page_tableが正しく指定できてないっぽい
   /* setting up page directory entry */
   u32 *pt = &page_table[pd_index][pt_index];
   page_directory[pd_index] = (((u32)pt) & 0xFFFFF000) | VM_PRESENT | VM_RW;
