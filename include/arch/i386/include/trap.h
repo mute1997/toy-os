@@ -2,11 +2,21 @@
 #define INTR_PRIVILEGE 0 /* kernel is ring 0 */
 #define USER_PRIVILEGE 3 /* uesr is ring3 */
 
-/* 8251A interrupt controller ports */
-#define INT_CTL 0x20
-#define INT_CTLMASK 0x21
-#define INT2_CTL 0xA0
-#define INT2_CTLMASK 0xA1
+/* PIC commands */
+#define PIC_MASTER_CMD 0x20
+#define PIC_SLAVE_CMD  0xA0
+
+/* PIC status */
+#define PIC_MASTER_STATUS 0x20
+#define PIC_SLAVE_STATUS  0xA0
+
+/* PIC data */
+#define PIC_MASTER_DATA 0x21
+#define PIC_SLAVE_DATA  0xA1
+
+/* PIC IMR */
+#define PIC_MASTER_IMR 0x21
+#define PIC_SLAVE_IMR  0xA1
 
 /* EOI */
 #define END_OF_INT 0x20

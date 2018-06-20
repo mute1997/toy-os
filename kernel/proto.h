@@ -6,5 +6,5 @@ void prot_init(void);
 void intr_init(void);
 
 /* io_intr */
-void enable(void);
-void disable(void);
+void enable_intr(void);
+void disable_intr(void);
