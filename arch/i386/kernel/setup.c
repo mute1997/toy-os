@@ -18,10 +18,5 @@ void setup(u32 magic, u32 addr) {
   prot_init(); /* Initialize GDT, IDT, trap */
   intr_init(); /* Initialize PIC */
 
-  // setup_physical_memory(addr); /* fill 1 to physical memory */ /* FIXME */
-  
-  // u32 *a = MEMORY_HIGH_LIMIT;
-  // *a = 1;
-  
   hlt();
 }
