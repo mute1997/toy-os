@@ -16,7 +16,7 @@ SECTIONS {
       *(.rodata)
     }
 
-    .data : AT(ADDR(.data) - 0xC0000000)
+    .data ALIGN (0x1000) : AT(ADDR(.data) - 0xC0000000)
     {
       *(.data)
     }

@@ -25,13 +25,12 @@ void init_kern_pages() {
 }
 
 void setup_physical_memory(u32 addr) {
-  u32 virt_addr = 0x0;
   u32 grub_size = (124*1024)/4;
   struct multiboot_tag *tag;
   multiboot_memory_map_t *mmap;
 
   /* map 124MB for grub */
-  map_page((void*)addr, (void*)virt_addr, grub_size);
+  u32 *virt_addr = map_page((void*)addr, (void*)0x0, grub_size);
 
   /* search free memory */
   for (tag = (struct multiboot_tag *) (virt_addr + 8);

@@ -1,6 +1,5 @@
 global start
 global page_directory
-global page_table
 
 section .multiboot
 header_start:
