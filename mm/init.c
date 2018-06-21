@@ -7,6 +7,7 @@
 extern unsigned long _bss_start;
 extern unsigned long _bss_end;
 extern unsigned long _kernel_end;
+extern pd_entry page_directory[1024];
 
 int is_kernel_section(u32 addr);
 int find_free_page();
@@ -15,8 +16,12 @@ void print_mmap(multiboot_memory_map_t *mmap);
 
 struct page pages[PHYS_PAGETABLE_SIZE];
 
-/* TODO */
 void init_kern_pages() {
+  u32 base = KERNEL_VIRTUAL_BASE + 0x400000;
+  for (int i=pde_index(base);i<=pde_index(MEMORY_HIGH_LIMIT);i++) {
+    u32 addr = i * 0x400000;
+    page_directory[i] = addr | VM_PRESENT | VM_RW | VM_PS;
+  }
 }
 
 void setup_physical_memory(u32 addr) {
