@@ -16,21 +16,31 @@ void print_mmap(multiboot_memory_map_t *mmap);
 
 struct page pages[PHYS_PAGETABLE_SIZE];
 
+/* TODO いい感じの位置に配置する */
 void init_kern_pages() {
   u32 base = KERNEL_VIRTUAL_BASE + 0x400000;
   for (int i=pde_index(base);i<=pde_index(MEMORY_HIGH_LIMIT);i++) {
+    //
+    // TODO カーネルのエンドに配置したいけどなんか後ろにあるのでおかしくなる
     u32 addr = i * 0x400000;
+    addr = 0x2000000;
+
     page_directory[i] = addr | VM_PRESENT | VM_RW | VM_PS;
   }
 }
 
 void setup_physical_memory(u32 addr) {
-  u32 grub_size = (124*1024)/4;
+  u32 grub_size = 1024;
   struct multiboot_tag *tag;
   multiboot_memory_map_t *mmap;
 
   /* map 124MB for grub */
-  u32 *virt_addr = map_page((void*)addr, (void*)0x0, grub_size);
+  u32 *virt_addr = map_page((void*)addr, (void*)0x00EFFFFF, grub_size);
+
+  u32 ph = virt_to_phys(virt_addr);
+  printk("phys_addr : 0x%x", ph); // 0x0
+  // printk("phys_addr : 0x%x", addr); // 0x1915e50
+  printk("virt_addr : 0x%x", virt_addr); // 0xeffe50
 
   /* search free memory */
   for (tag = (struct multiboot_tag *) (virt_addr + 8);
@@ -49,9 +59,9 @@ void setup_physical_memory(u32 addr) {
               ((unsigned long) mmap
                + ((struct multiboot_tag_mmap *) tag)->entry_size)) {
 
+            print_mmap(mmap);
             /* RAM Available && less than 32bit && dont use top */
             if (mmap->type == 1 && MEMORY_HIGH_LIMIT > mmap->addr && mmap->addr != 0x0) {
-              print_mmap(mmap);
               freerange(mmap->addr, mmap->len);
             }
           }
