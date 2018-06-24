@@ -37,10 +37,18 @@ void setup_physical_memory(u32 addr) {
   /* map 124MB for grub */
   u32 *virt_addr = map_page((void*)addr, (void*)0x00EFFFFF, grub_size);
 
-  u32 ph = virt_to_phys(virt_addr);
-  printk("phys_addr : 0x%x", ph); // 0x0
-  // printk("phys_addr : 0x%x", addr); // 0x1915e50
-  printk("virt_addr : 0x%x", virt_addr); // 0xeffe50
+  /*
+   * KERNEL_END = 0xc1909000
+   * u32 ph = virt_to_phys(virt_addr);
+   * printk("phys_addr : 0x%x", ph); // 0x1909e50
+   * printk("virt_addr : 0x%x", virt_addr); // 0xeffe50
+  */
+
+  tag = (struct multiboot_tag *) (virt_addr + 8);
+  printk("tag->type 0x%x", tag->type);
+
+  unsigned size = *(unsigned *) virt_addr;
+  printk("Announced mbi size 0x%x", size);
 
   /* search free memory */
   for (tag = (struct multiboot_tag *) (virt_addr + 8);

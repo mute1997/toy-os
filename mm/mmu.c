@@ -13,10 +13,8 @@ u32 virt_to_phys(u32 *virt) {
     /* 4MB paging */
     return (page_directory[pd_index] & 0xFFC00000) | ((u32)virt & 0x3FFFFF);
   } else {
-    /* TODO 4KB paging */
-    u32 *pt = page_directory[pd_index] & 0xFFFFF000;
-    printk("0x%x",pt);
-    return ((u32)pt & 0xFFFFF000) | ((u32)virt & 0x00000FFF);
+    /* 4KB paging */
+    return (page_table[pd_index][pt_index] & 0xFFFFF000) | ((u32)virt & 0x00000FFF);
   }
   return 0;
 }
