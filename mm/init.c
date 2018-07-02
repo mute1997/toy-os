@@ -16,39 +16,20 @@ void print_mmap(multiboot_memory_map_t *mmap);
 
 struct page pages[PHYS_PAGETABLE_SIZE];
 
-/* TODO いい感じの位置に配置する */
+/* 0x400000 ~ 0x400000+kernel size */
 void init_kern_pages() {
   u32 base = KERNEL_VIRTUAL_BASE + 0x400000;
-  for (int i=pde_index(base);i<=pde_index(MEMORY_HIGH_LIMIT);i++) {
-    //
-    // TODO カーネルのエンドに配置したいけどなんか後ろにあるのでおかしくなる
-    u32 addr = i * 0x400000;
-    addr = 0x2000000;
-
+  u32 addr = 0x400000;
+  for (u32 i=pde_index(base);i<=pde_index((u32)KERNEL_VIRTUAL_END);i++) {
     page_directory[i] = addr | VM_PRESENT | VM_RW | VM_PS;
+    addr += 0x400000;
   }
 }
 
 void setup_physical_memory(u32 addr) {
-  u32 grub_size = 1024;
-  struct multiboot_tag *tag;
   multiboot_memory_map_t *mmap;
-
-  /* map 124MB for grub */
-  u32 *virt_addr = map_page((void*)addr, (void*)0x00EFFFFF, grub_size);
-
-  /*
-   * KERNEL_END = 0xc1909000
-   * u32 ph = virt_to_phys(virt_addr);
-   * printk("phys_addr : 0x%x", ph); // 0x1909e50
-   * printk("virt_addr : 0x%x", virt_addr); // 0xeffe50
-  */
-
-  tag = (struct multiboot_tag *) (virt_addr + 8);
-  printk("tag->type 0x%x", tag->type);
-
-  unsigned size = *(unsigned *) virt_addr;
-  printk("Announced mbi size 0x%x", size);
+  struct multiboot_tag *tag;
+  u32 virt_addr = addr + KERNEL_VIRTUAL_BASE;
 
   /* search free memory */
   for (tag = (struct multiboot_tag *) (virt_addr + 8);
@@ -67,9 +48,9 @@ void setup_physical_memory(u32 addr) {
               ((unsigned long) mmap
                + ((struct multiboot_tag_mmap *) tag)->entry_size)) {
 
-            print_mmap(mmap);
             /* RAM Available && less than 32bit && dont use top */
             if (mmap->type == 1 && MEMORY_HIGH_LIMIT > mmap->addr && mmap->addr != 0x0) {
+              /* print_mmap(mmap); */
               freerange(mmap->addr, mmap->len);
             }
           }
@@ -77,8 +58,6 @@ void setup_physical_memory(u32 addr) {
         break;
     }
   }
-
-  unmap_page((void*)virt_addr, grub_size);
 
   printk("Setup Physical Memory... [OK]");
 }
@@ -88,7 +67,8 @@ void setup_heap() {
 }
 
 int is_kernel_section(u32 addr) {
-  return &_kernel_end < (u32*)addr && &_kernel_end < (u32*)(addr+PAGE_SIZE);
+  return (KERNEL_VIRTUAL_END - KERNEL_VIRTUAL_BASE) < (u32*)addr &&
+    (KERNEL_VIRTUAL_END - KERNEL_VIRTUAL_BASE) < (u32*)(addr+PAGE_SIZE);
 }
 
 /* return free page offset, witch found the first */
@@ -106,16 +86,13 @@ int find_unused_page() {
 
 void freerange(u32 addr, u32 length) {
   u32 page_addr;
-  int offset;
+  int offset = find_unused_page();
 
-  offset=find_unused_page();
   for(page_addr=addr;page_addr<addr+length;page_addr+=PAGE_SIZE) {
     if (!(is_kernel_section(page_addr))) continue;
-
     pages[offset].count=0;
     pages[offset].phys_mem=(void*)page_addr;
     pages[offset].virt_mem=NULL;
-
     offset+=1;
   }
 }

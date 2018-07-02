@@ -4,10 +4,10 @@ extern u32 _kernel_end;
 extern u32 _text_end;
 
 #define KERNEL_VIRTUAL_BASE 0xC0000000
-#define KERNEL_VIRTUAL_START &_text_end
-#define KERNEL_VIRTUAL_END &_kernel_end
+#define KERNEL_VIRTUAL_START (u32)&_text_end
+#define KERNEL_VIRTUAL_END (u32)&_kernel_end
 
-#define MEMORY_HIGH_LIMIT 0xFFFFFFFF
+#define MEMORY_HIGH_LIMIT 0x00EFFFFF
 
 #define PAGE_SIZE (1024*4) /* 4KB */
 #define PAGE_SHIFT 12
@@ -61,7 +61,7 @@ struct page {
 /* init */
 void init_kern_pages();
 void setup_physical_memory(u32 addr);
-void setup_heap(void);
+void setup_heap();
 
 /* page_alloc */
 int phys_to_page(u32 *addr);
