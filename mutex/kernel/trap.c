@@ -5,6 +5,11 @@
 __attribute__((interrupt))
 void interrupt_stub(struct interrupt_frame *frame){
   printk("interrupt_stub");
+  printk("ip    0x%x", frame->ip);
+  printk("cs    0x%x", frame->cs);
+  printk("flags 0x%x", frame->flags);
+  printk("sp    0x%x", frame->sp);
+  printk("ss    0x%x", frame->ss);
 }
 
 __attribute__((interrupt))
