@@ -5,6 +5,10 @@
 extern pd_entry page_directory[1024];
 pt_entry page_table[1024][1024] __attribute__((aligned(4096)));
 
+void setup_page_table() {
+  memset(page_table, 0, sizeof(page_table));
+}
+
 u32 virt_to_phys(u32 *virt) {
   u32 pd_index = pde_index((u32)virt);
   u32 pt_index = pte_index((u32)virt);

@@ -30,6 +30,9 @@ void setup_physical_memory(u32 addr) {
   struct multiboot_tag *tag;
   u32 virt_addr = addr + KERNEL_VIRTUAL_BASE;
 
+  /* setup pages structure */
+  memset(pages, 0, sizeof(pages));
+
   /* search free memory */
   for (tag = (struct multiboot_tag *) (virt_addr + 8);
       tag->type != MULTIBOOT_TAG_TYPE_END;
@@ -59,12 +62,6 @@ void setup_physical_memory(u32 addr) {
   }
 
   printk("Setup Physical Memory... [OK]");
-}
-
-void setup_heap() {
-  u32 *addr = &_bss_start;
-  u32 size = ((int)&_bss_end - (int)&_bss_start) / (256*8);
-  memset((void *)addr, 0x00, size);
 }
 
 int is_kernel_section(u32 addr) {

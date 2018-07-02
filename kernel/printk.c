@@ -1,4 +1,5 @@
 #include <drivers/video.h>
+#include <mm.h>
 #include <std/stdarg.h>
 
 #define LOG_BUF_SIZE 32768
@@ -9,6 +10,11 @@ unsigned long top = 0;
 unsigned long bottom = 0;
 
 extern int vsnprintf(char *buf, unsigned long size, const char *fmt, va_list args);
+
+void setup_log_buf() {
+  memset(log_buf, 0, sizeof(log_buf));
+}
+
 
 int vprintk(const char *fmt, va_list args) {
   int printed_len = vsnprintf(log_buf[bottom], sizeof(log_buf[bottom]), fmt, args);

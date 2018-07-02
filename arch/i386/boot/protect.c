@@ -130,6 +130,10 @@ void prot_init() {
   memset(gdt, 0, sizeof(gdt));
   memset(idt, 0, sizeof(idt));
 
+  /* Init *_desc*/
+  memset(&gdt_desc, 0, sizeof(gdt_desc));
+  memset(&idt_desc, 0, sizeof(idt_desc));
+
   /* set GDT pointer */
   gdt_desc.base = (u32)gdt;
   gdt_desc.limit = sizeof(gdt)-1;

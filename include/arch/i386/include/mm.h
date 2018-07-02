@@ -61,7 +61,6 @@ struct page {
 /* init */
 void init_kern_pages();
 void setup_physical_memory(u32 addr);
-void setup_heap();
 
 /* page_alloc */
 int phys_to_page(u32 *addr);
@@ -69,6 +68,7 @@ u32 *alloc_page();
 void free_page(u32 *addr);
 
 /* mmu */
+void setup_page_table();
 void map_one_page(u32 *phys_addr, u32 *virt_addr);
 u32 virt_to_phys(u32 *virt);
 u32 *map_page(u32 *phys_addr, u32 *virt_addr, u32 size);

@@ -13,9 +13,12 @@ void setup(u32 magic, u32 addr) {
 
   init_kern_pages(); /* Init page 3GB to KERNEL_VIRTUAL_END for kernel */
 
-  setup_heap();
   flush_screen();
-  
+
+  /* setup heap */
+  setup_log_buf();
+  setup_page_table();
+
   prot_init(); /* Initialize GDT, IDT, trap */
 
   setup_physical_memory(addr); /* search free memory by grub info */
