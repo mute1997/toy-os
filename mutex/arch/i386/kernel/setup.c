@@ -23,8 +23,7 @@ void setup(u32 magic, u32 addr) {
 
   setup_physical_memory(addr); /* search free memory by grub info */
   
-  // FIXME issue #4
-  // intr_init(); /* Initialize PIC */
+  intr_init(); /* Initialize PIC */
 
   hlt();
 }

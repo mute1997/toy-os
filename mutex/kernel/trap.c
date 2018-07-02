@@ -3,6 +3,11 @@
 #include <trap.h>
 
 __attribute__((interrupt))
+void interrupt_stub(struct interrupt_frame *frame){
+  printk("interrupt_stub");
+}
+
+__attribute__((interrupt))
 void hwint00(struct interrupt_frame *frame){
   printk("hwint00");
 }

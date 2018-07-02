@@ -82,8 +82,15 @@ void idt_copy_vectors_pic() {
 }
 
 void idt_init() {
-  idt_copy_vectors_pic();
-  idt_copy_vectors(gate_table_exceptions);
+  /* Dummy interrupt handler */
+  for (int i=0;i<256;i++) {
+    // int_gate(idt, i, (u32)interrupt_stub, 0x8E);
+    int_gate(idt, i, (u32)hwint00, 0x8E);
+  }
+
+  /* TODO 元に戻す */
+  // idt_copy_vectors_pic();
+  // idt_copy_vectors(gate_table_exceptions);
 }
 
 
