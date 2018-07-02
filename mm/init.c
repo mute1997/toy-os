@@ -6,7 +6,6 @@
 
 extern unsigned long _bss_start;
 extern unsigned long _bss_end;
-extern unsigned long _kernel_end;
 extern pd_entry page_directory[1024];
 
 int is_kernel_section(u32 addr);
@@ -63,7 +62,9 @@ void setup_physical_memory(u32 addr) {
 }
 
 void setup_heap() {
-  memset((void *)_bss_start, 0x00, _bss_end-_bss_start);
+  u32 *addr = &_bss_start;
+  u32 size = ((int)&_bss_end - (int)&_bss_start) / (256*8);
+  memset((void *)addr, 0x00, size);
 }
 
 int is_kernel_section(u32 addr) {
