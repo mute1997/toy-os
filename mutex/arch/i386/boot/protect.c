@@ -88,7 +88,7 @@ void idt_init() {
   }
 
   idt_copy_vectors_pic();
-  // idt_copy_vectors(gate_table_exceptions); /* TODO こっちのハンドラでdouble faultしてる*/
+  idt_copy_vectors(gate_table_exceptions);
 }
 
 
