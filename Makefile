@@ -7,7 +7,8 @@ CD=cd
 # Directories
 # -----------------
 BUILD_DIR=build
-KERNEL=kernel
+KERNEL_DIR=mutex
+KERNEL=$(KERNEL_DIR)/kernel
 
 # -----------------
 # Docker

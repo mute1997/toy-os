@@ -17,8 +17,8 @@ CFLAGS = \
 				 -fno-stack-protector \
 				 -mno-sse
 LD     = ld
-LDFLAGS = -nostdlib -Map ../build/kernel.map -m elf_i386
-LDSCRIPT = ../scripts/kernel.ld
+LDFLAGS = -nostdlib -Map ../../build/kernel.map -m elf_i386
+LDSCRIPT = ../../scripts/kernel.ld
 NASM = nasm
 NASM_FLAGS = -f elf32
 
@@ -33,7 +33,7 @@ LIB_DIR=../lib
 MM_DIR=../mm
 
 # output
-BUILD_DIR=../build
+BUILD_DIR=../../build
 KERNEL_ELF=$(BUILD_DIR)/kernel.elf
 ISO_FILE=$(BUILD_DIR)/mutex.iso
 
