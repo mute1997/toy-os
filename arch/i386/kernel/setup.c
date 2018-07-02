@@ -13,7 +13,7 @@ void setup(u32 magic, u32 addr) {
 
   init_kern_pages(); /* Init page 3GB to KERNEL_VIRTUAL_END for kernel */
 
-  // setup_heap();
+  setup_heap();
   flush_screen();
   
   prot_init(); /* Initialize GDT, IDT, trap */
