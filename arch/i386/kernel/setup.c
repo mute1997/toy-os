@@ -10,13 +10,18 @@
 
 void setup(u32 magic, u32 addr) {
   if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) printk("invalid magic number");
-  if (addr & 7) printk("unaligned mbi");
 
-  setup_heap();
+  init_kern_pages(); /* Init page 3GB to KERNEL_VIRTUAL_END for kernel */
+
+  // setup_heap();
   flush_screen();
   
   prot_init(); /* Initialize GDT, IDT, trap */
-  intr_init(); /* Initialize PIC */
+
+  setup_physical_memory(addr); /* search free memory by grub info */
+  
+  // FIXME issue #4
+  // intr_init(); /* Initialize PIC */
 
   hlt();
 }

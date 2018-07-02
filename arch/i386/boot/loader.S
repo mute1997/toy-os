@@ -1,4 +1,5 @@
 global start
+global page_directory
 
 section .multiboot
 header_start:
@@ -18,7 +19,7 @@ KERNEL_PAGE_NUMBER equ (KERNEL_VIRTUAL_BASE >> 22)
 
 section .data
 align 0x1000
-boot_page_directory:
+page_directory:
   dd 0x00000083
   times (KERNEL_PAGE_NUMBER - 1) dd 0
   dd 0x00000083
@@ -32,7 +33,7 @@ section .text
   STACK_SIZE equ 4096*4
 
 start:
-  mov ecx, (boot_page_directory - KERNEL_VIRTUAL_BASE)
+  mov ecx, (page_directory - KERNEL_VIRTUAL_BASE)
   mov cr3, ecx
 
   mov ecx, cr4
@@ -47,16 +48,13 @@ start:
   jmp ecx
 
 start_higher_half:
-  mov dword [boot_page_directory], 0
+  mov dword [page_directory], 0
   invlpg [0]
 
   mov esp, stack+STACK_SIZE
 
-  add ebx, KERNEL_VIRTUAL_BASE
   push ebx
-
   push eax
-
   call setup
 
   hlt
