@@ -17,7 +17,7 @@ void hwint00(struct interrupt_frame *frame){
 __attribute__((interrupt))
 void hwint01(struct interrupt_frame *frame){
   unsigned char scan_code = inb(0x60);
-  printk("%d", scan_code);
+  printk("0x%x", scan_code);
   irq_8259_eoi(VECTOR(1));
 }
 __attribute__((interrupt))
