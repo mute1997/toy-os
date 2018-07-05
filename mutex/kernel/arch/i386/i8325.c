@@ -53,7 +53,7 @@ void intr_init() {
 
   enable_intr();
 
-  printk("Initialize PIC... [OK]");
+  printk("Initialize PIC... [OK]\n");
 }
 
 /* End of interrupt */

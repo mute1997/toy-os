@@ -2,6 +2,6 @@
 #include <std/printk.h>
 
 int sys_echo(char *str) {
-  printk("%s", str);
+  printk("%s\n", str);
   return 0;
 }

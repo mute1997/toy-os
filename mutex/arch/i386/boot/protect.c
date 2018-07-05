@@ -126,11 +126,11 @@ void switch_to_new_gdt() {
 void prot_load_selectors() {
   /* set new GDT */
   switch_to_new_gdt();
-  printk("Setup gdt...  [OK]");
+  printk("Setup gdt...  [OK]\n");
 
   /* set new IDT */
   switch_to_new_idt();
-  printk("Setup idt...  [OK]");
+  printk("Setup idt...  [OK]\n");
 }
 
 void prot_init() {

@@ -61,7 +61,7 @@ void setup_physical_memory(u32 addr) {
     }
   }
 
-  printk("Setup Physical Memory... [OK]");
+  printk("Setup Physical Memory... [OK]\n");
 }
 
 int is_kernel_section(u32 addr) {

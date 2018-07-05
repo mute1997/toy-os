@@ -10,7 +10,7 @@
 #include <std/syscall.h>
 
 void setup(u32 magic, u32 addr) {
-  if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) printk("invalid magic number");
+  if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) printk("invalid magic number\n");
 
   init_kern_pages(); /* Init page 3GB to KERNEL_VIRTUAL_END for kernel */
 

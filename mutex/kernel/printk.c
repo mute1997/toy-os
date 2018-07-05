@@ -23,8 +23,19 @@ int vprintk(const char *fmt, va_list args) {
 
   /* output log_buf to screen */
   int lines = bottom - top + 1;
+  int x = 0;
+  int y = 0;
   for(int i=0;i<lines;i++) {
-    put_str(VRAM_MODE, 0, i, COLOR_LIGHTGREY, log_buf[top + i]);
+    for(int j=0;j<strlen(log_buf[top + i]);j++) {
+      if (log_buf[top + i][j] == '\n') {
+        j++; // skip '\n'
+        y++; // next line
+        x = 0;
+        continue;
+      }
+      put_char(VRAM_MODE, x, y, COLOR_LIGHTGREY, log_buf[top + i][j]);
+      x++; // next char
+    }
   }
   bottom++;
 
