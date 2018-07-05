@@ -9,15 +9,6 @@ void flush_screen(void) {
   }
 }
 
-void put_char(int mode, int x, int y, int color, char c) {
-  int column = 80;
-  int index = x*2+y*column*2;
-  char *screen_ptr = (char*)mode;
-
-  screen_ptr[index] = c;
-  screen_ptr[index+1] = color;
-}
-
 void put_str(int mode, int x, int y, int color, char *s) {
   int column = 80;
   int index = x*2+y*column*2;

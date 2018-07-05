@@ -17,30 +17,27 @@ void setup_log_buf() {
 
 
 int vprintk(const char *fmt, va_list args) {
-  int printed_len = vsnprintf(log_buf[bottom], sizeof(log_buf[bottom]), fmt, args);
+  char buf[256];
+  memset(buf, NULL, sizeof(buf));
+  int printed_len = vsnprintf(buf, sizeof(buf), fmt, args);
 
   flush_screen();
 
+  for (int i=0;i<strlen(buf);i++) {
+    if (buf[i] == '\n') {
+      bottom++;
+      i++;
+    }
+    log_buf[bottom][strlen(log_buf[bottom])] = buf[i];
+  }
+
   /* output log_buf to screen */
   int lines = bottom - top + 1;
-  int x = 0;
-  int y = 0;
   for(int i=0;i<lines;i++) {
-    for(int j=0;j<strlen(log_buf[top + i]);j++) {
-      if (log_buf[top + i][j] == '\n') {
-        j++; // skip '\n'
-        y++; // next line
-        x = 0;
-        continue;
-      }
-      put_char(VRAM_MODE, x, y, COLOR_LIGHTGREY, log_buf[top + i][j]);
-      x++; // next char
-    }
+    put_str(VRAM_MODE, 0, i, COLOR_LIGHTGREY, log_buf[top + i]);
   }
-  bottom++;
 
   /* if overflow log_buf, shift top */
-  lines = (bottom - top + 1);
   if(lines > LOG_BUF_LIMIT) top++;
 
   return printed_len;
