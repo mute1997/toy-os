@@ -9,6 +9,7 @@
 #define store_gdt(dtr) __asm__ __volatile__("sgdt %0":"=m" (*dtr))
 
 extern void load_gdt(u32 desc_struct);
+extern void syshandler();
 
 struct desctableptr gdt_desc, idt_desc;
 struct desc_struct gdt[GDT_ENTRIES]; /* GDT */
@@ -54,10 +55,7 @@ static struct gate_table gate_table_exceptions[] = {
 	{ alignment_check, ALIGNMENT_CHECK_VECTOR, INTR_PRIVILEGE },
 	{ machine_check, MACHINE_CHECK_VECTOR, INTR_PRIVILEGE },
 	{ simd_exception, SIMD_EXCEPTION_VECTOR, INTR_PRIVILEGE },
-	{ ipc_entry_softint_orig, IPC_VECTOR_ORIG, USER_PRIVILEGE },
-	{ kernel_call_entry_orig, KERN_CALL_VECTOR_ORIG, USER_PRIVILEGE },
-	{ ipc_entry_softint_um, IPC_VECTOR_UM, USER_PRIVILEGE },
-	{ kernel_call_entry_um, KERN_CALL_VECTOR_UM, USER_PRIVILEGE },
+	// { syscall_handler, SYSCALL_VECTOR, USER_PRIVILEGE },
 	{ NULL, 0, 0}
 };
 
@@ -77,6 +75,10 @@ void idt_copy_vectors(struct gate_table* first) {
   }
 }
 
+void syscall_vector() {
+  int_gate(idt, SYSCALL_VECTOR, (u32)syshandler, PRESENT | INT_GATE_TYPE | (USER_PRIVILEGE << 5));
+}
+
 void idt_copy_vectors_pic() {
 	idt_copy_vectors(gate_table_pic);
 }
@@ -87,6 +89,7 @@ void idt_init() {
     int_gate(idt, i, (u32)interrupt_stub, 0x8E);
   }
 
+  syscall_vector();
   idt_copy_vectors_pic();
   idt_copy_vectors(gate_table_exceptions);
 }

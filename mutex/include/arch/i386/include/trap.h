@@ -43,10 +43,7 @@
 #define SIMD_EXCEPTION_VECTOR 19
 
 /* system call vector */
-#define KERN_CALL_VECTOR_ORIG 32
-#define IPC_VECTOR_ORIG 33
-#define KERN_CALL_VECTOR_UM 34
-#define IPC_VECTOR_UM 35
+#define SYSCALL_VECTOR 0x80
 
 /* IRQ VECTOR */
 #define IRQ0_VECTOR 0x50
@@ -112,7 +109,4 @@ void machine_check(struct interrupt_frame *frame);
 void simd_exception(struct interrupt_frame *frame);
 
 /* software interrupt handlers */
-void ipc_entry_softint_orig(struct interrupt_frame *frame);
-void ipc_entry_softint_um(struct interrupt_frame *frame);
-void kernel_call_entry_orig(struct interrupt_frame *frame);
-void kernel_call_entry_um(struct interrupt_frame *frame);
+int syscall_handler();

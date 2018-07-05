@@ -1,5 +1,8 @@
 #include <asm/types.h>
 
+#define read_registers(a, b, c, d) __asm__ __volatile__ ("" \
+      : "=a" (a), "=b" (b), "=c" (c), "=d" (d))
+
 static inline void outb(u16 port, u8 val) {
 	__asm__ __volatile__ ("outb %0,%1" : : "a" (val), "Nd" (port));
 }

@@ -1,6 +1,8 @@
 #include <std/printk.h>
 #include <std/hlt.h>
+#include <std/syscall.h>
 #include <asm/io.h>
+#include <asm/types.h>
 #include <trap.h>
 #include <i8325.h>
 
@@ -170,19 +172,14 @@ void simd_exception(struct interrupt_frame *frame){
 }
 
 /* software interrupt handlers */
-__attribute__((interrupt))
-void ipc_entry_softint_orig(struct interrupt_frame *frame){
-  printk("ipc entry softint orig");
-}
-__attribute__((interrupt))
-void ipc_entry_softint_um(struct interrupt_frame *frame){
-  printk("ipc entry softint um");
-}
-__attribute__((interrupt))
-void kernel_call_entry_orig(struct interrupt_frame *frame){
-  printk("kernel call entry orig");
-}
-__attribute__((interrupt))
-void kernel_call_entry_um(struct interrupt_frame *frame){
-  printk("kernel call entry um");
+int syscall_handler(){
+  int eax, ebx, ecx, edx;
+  read_registers(eax, ebx, ecx, edx);
+
+  if (syscalls[eax] == NULL) {
+    printk("Not found syscall");
+    return 1;
+  }
+
+  return syscalls[eax](ebx, ecx, edx);
 }
