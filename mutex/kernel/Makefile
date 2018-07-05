@@ -60,8 +60,8 @@ OBJS = $(BOOT_DIR)/loader.o \
 			$(LIB_DIR)/echo.o \
 			$(MM_DIR)/init.o \
 			$(MM_DIR)/page_alloc.o \
-			$(MM_DIR)/mmu.o
-
+			$(MM_DIR)/mmu.o \
+			../../apps/shell/shell.o
 
 %.o : %.c
 	$(CC) $(CFLAGS) -o $*.o $*.c

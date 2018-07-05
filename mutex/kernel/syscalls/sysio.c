@@ -5,7 +5,7 @@ extern char key_inputs[256];
 extern int is_pressed_enter;
 
 int sys_echo(char *str) {
-  printk("%s\n", str);
+  printk("%s", str);
   return 0;
 }
 
