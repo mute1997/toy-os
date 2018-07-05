@@ -1,70 +1,94 @@
 #include <std/printk.h>
 #include <std/hlt.h>
+#include <asm/io.h>
 #include <trap.h>
+#include <i8325.h>
+
+__attribute__((interrupt))
+void interrupt_stub(struct interrupt_frame *frame){
+  printk("interrupt_stub");
+}
 
 __attribute__((interrupt))
 void hwint00(struct interrupt_frame *frame){
   printk("hwint00");
+  irq_8259_eoi(VECTOR(0));
 }
 __attribute__((interrupt))
 void hwint01(struct interrupt_frame *frame){
-  printk("hwint01");
+  unsigned char scan_code = inb(0x60);
+  printk("0x%x", scan_code);
+  irq_8259_eoi(VECTOR(1));
 }
 __attribute__((interrupt))
 void hwint02(struct interrupt_frame *frame){
   printk("hwint02");
+  irq_8259_eoi(VECTOR(2));
 }
 __attribute__((interrupt))
 void hwint03(struct interrupt_frame *frame){
   printk("hwint03");
+  irq_8259_eoi(VECTOR(3));
 }
 __attribute__((interrupt))
 void hwint04(struct interrupt_frame *frame){
   printk("hwint04");
+  irq_8259_eoi(VECTOR(4));
 }
 __attribute__((interrupt))
 void hwint05(struct interrupt_frame *frame){
   printk("hwint05");
+  irq_8259_eoi(VECTOR(5));
 }
 __attribute__((interrupt))
 void hwint06(struct interrupt_frame *frame){
   printk("hwint06");
+  irq_8259_eoi(VECTOR(6));
 }
 __attribute__((interrupt))
 void hwint07(struct interrupt_frame *frame){
   printk("hwint07");
+  irq_8259_eoi(VECTOR(7));
 }
 __attribute__((interrupt))
 void hwint08(struct interrupt_frame *frame){
   printk("hwint08");
+  irq_8259_eoi(VECTOR(8));
 }
 __attribute__((interrupt))
 void hwint09(struct interrupt_frame *frame){
   printk("hwint09");
+  irq_8259_eoi(VECTOR(9));
 }
 __attribute__((interrupt))
 void hwint10(struct interrupt_frame *frame){
   printk("hwint10");
+  irq_8259_eoi(VECTOR(10));
 }
 __attribute__((interrupt))
 void hwint11(struct interrupt_frame *frame){
   printk("hwint11");
+  irq_8259_eoi(VECTOR(11));
 }
 __attribute__((interrupt))
 void hwint12(struct interrupt_frame *frame){
   printk("hwint12");
+  irq_8259_eoi(VECTOR(12));
 }
 __attribute__((interrupt))
 void hwint13(struct interrupt_frame *frame){
   printk("hwint13");
+  irq_8259_eoi(VECTOR(13));
 }
 __attribute__((interrupt))
 void hwint14(struct interrupt_frame *frame){
   printk("hwint14");
+  irq_8259_eoi(VECTOR(14));
 }
 __attribute__((interrupt))
 void hwint15(struct interrupt_frame *frame){
   printk("hwint15");
+  irq_8259_eoi(VECTOR(15));
 }
 
 __attribute__((interrupt))

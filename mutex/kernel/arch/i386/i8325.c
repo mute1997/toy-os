@@ -2,6 +2,7 @@
 #include <std/printk.h>
 #include <trap.h>
 #include <proto.h>
+#include <i8325.h>
 
 #define ICW1_ICW4	0x01		/* ICW4 (not) needed */
 #define ICW1_SINGLE	0x02		/* Single (cascade) mode */
@@ -24,7 +25,7 @@ void intr_init() {
   /* Disable PIC */
   outb(PIC_MASTER_IMR, 0xFF);
   outb(PIC_SLAVE_IMR, 0xFF);
-
+  
   /* Master, Slave ICW1*/
   outb(PIC_MASTER_CMD, 0x11); /* edge trigger mode */
   outb(PIC_SLAVE_CMD, 0x11); /* edge trigger mode */
@@ -32,16 +33,16 @@ void intr_init() {
   /* Master, Slave ICW2 */
   outb(PIC_MASTER_DATA, IRQ0_VECTOR); /* IRQ0_VECTOR ~ IRQ0_VECTOR + 7*/ 
   outb(PIC_SLAVE_DATA, IRQ8_VECTOR); /* IRQ8_VECTOR ~ IRQ8_VECTOR+7*/
-
+  
   /* Master, Slave ICW3*/
   outb(PIC_MASTER_DATA, 1<<2);
   outb(PIC_SLAVE_DATA, 0x02);
-
+  
   /* Master, Slave ICW4 */
   outb(PIC_MASTER_DATA, 0x01); /* Non buffer mode */
   outb(PIC_MASTER_DATA, 0x01); /* Non buffer mode */
-
-  // /* mask all irq */
+  
+  /* mask all irq */
   outb(PIC_MASTER_DATA, 0xff);
   outb(PIC_SLAVE_DATA, 0xff);
 

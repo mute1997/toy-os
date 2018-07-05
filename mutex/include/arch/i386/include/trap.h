@@ -69,6 +69,9 @@ struct interrupt_frame {
     uword_t ss;
 };
 
+/* stub interrupt */
+void interrupt_stub(struct interrupt_frame *frame);
+
 /* hardware interrupt handlers */
 void hwint00(struct interrupt_frame *frame);
 void hwint01(struct interrupt_frame *frame);
