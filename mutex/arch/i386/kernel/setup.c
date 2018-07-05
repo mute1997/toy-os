@@ -28,13 +28,11 @@ void setup(u32 magic, u32 addr) {
 
   init_syscalls(); /* Initialize systemcalls */
 
-  // TODO 即地を入力できるようにしたい
-  char *arg1 = "ECHO SYSTEMCALL";
-  int a=0;
-  int ret;
-  syscall(SYS_ECHO, arg1, a, a, ret);
-  syscall(SYS_X, arg1, a, a, ret);
-  syscall(SYS_XP, arg1, a, a, ret);
+  init_keyboard(); /* Initialize keyboard */
+
+  char *str = "ECHO SYSTEMCALL";
+  int ret, arg = NULL;
+  syscall(SYS_ECHO, str, arg, arg, ret);
 
   hlt();
 }

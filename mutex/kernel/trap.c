@@ -1,6 +1,7 @@
 #include <std/printk.h>
 #include <std/hlt.h>
 #include <std/syscall.h>
+#include <drivers/keyboard.h>
 #include <asm/io.h>
 #include <asm/types.h>
 #include <trap.h>
@@ -18,8 +19,13 @@ void hwint00(struct interrupt_frame *frame){
 }
 __attribute__((interrupt))
 void hwint01(struct interrupt_frame *frame){
-  unsigned char scan_code = inb(0x60);
-  printk("0x%x", scan_code);
+  unsigned char scancode = inb(0x60);
+  char letter = get_char_from_scancode(scancode);
+  if (letter == NULL) {
+    irq_8259_eoi(VECTOR(1));
+    return;
+  }
+  printk("%c", letter);
   irq_8259_eoi(VECTOR(1));
 }
 __attribute__((interrupt))

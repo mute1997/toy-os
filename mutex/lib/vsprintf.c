@@ -33,7 +33,7 @@ int vsnprintf(char *buf, unsigned long size, const char *fmt, va_list args) {
       continue;
     }
 
-    char *s;
+    char *s, c;
     int len;
     unsigned int num;
     char *end = buf + size - 1;
@@ -42,6 +42,11 @@ int vsnprintf(char *buf, unsigned long size, const char *fmt, va_list args) {
       case 'd':
         num = va_arg(args, unsigned int);
         str = number(str, end, num, 10);
+        break;
+      case 'c':
+        c = va_arg(args, char);
+        *str+=c;
+        *str++;
         break;
       case 'x':
         num = va_arg(args, unsigned int);
@@ -57,7 +62,7 @@ int vsnprintf(char *buf, unsigned long size, const char *fmt, va_list args) {
         }
         break;
       default:
-        ;
+        break;
     }
   }
 

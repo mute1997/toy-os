@@ -45,6 +45,7 @@ OBJS = $(BOOT_DIR)/loader.o \
 			$(ARCH_DIR)/$(ARCH)/kernel/setup.o \
 			$(ARCH_DIR)/$(ARCH)/lib/string.o \
 			$(ARCH_DIR)/$(DRIVER_DIR)/vram/video.o \
+			$(ARCH_DIR)/$(DRIVER_DIR)/keyboard/keyboard.o \
 			$(KERNEL_DIR)/printk.o \
 			$(KERNEL_DIR)/trap.o \
 			$(KERNEL_DIR)/arch/$(ARCH)/i8325.o \

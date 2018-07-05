@@ -3,12 +3,12 @@
 #define SYSCALL_COUNT 600
 #define define_syscall(i, func) syscalls[i] = func
 #define syscall(i, arg1, arg2, arg3, ret) __asm__ __volatile__ ("int $0x80" \
-      : "+b" (arg1), \
-        "+c" (arg2), \
-        "+d" (arg3), \
-        "=a" (ret) \
-      : "a" (i) \
-      : "memory", "cc")
+        : "+b" (arg1), \
+          "+c" (arg2), \
+          "+d" (arg3), \
+          "=a" (ret) \
+        : "a" (i) \
+        : "memory", "cc")
 
 #define SYS_X     500
 #define SYS_XP    501
