@@ -1,9 +1,12 @@
 #include <drivers/keyboard.h>
+#include <asm/types.h>
 #include <mm.h>
 
+char key_inputs[256];
 char scancodes[0xff];
 char shifted_scancodes[0xff];
 int is_pressed_shift = NOT_PRESS;
+int is_pressed_enter = NOT_PRESS;
 
 void init_keyboard() {
   memset(scancodes, NULL, sizeof(scancodes));
@@ -52,6 +55,8 @@ void init_keyboard() {
 }
 
 char get_char_from_scancode(int scancode) {
+  char ret;
+
   // shift
   if (scancode == 0x2a || scancode == 0x36) {
     is_pressed_shift = PRESS;
@@ -59,6 +64,20 @@ char get_char_from_scancode(int scancode) {
     is_pressed_shift = NOT_PRESS;
   }
 
-  if (is_pressed_shift) return shifted_scancodes[scancode];
-  return scancodes[scancode];
+  // enter
+  if (scancode == 0x1c) {
+    is_pressed_enter = PRESS;
+  } else if (scancode == 0x9c) {
+    is_pressed_enter = NOT_PRESS;
+    memset(key_inputs, NULL, sizeof(key_inputs));
+  }
+
+  if (is_pressed_shift) ret = shifted_scancodes[scancode];
+  else ret = scancodes[scancode];
+
+  if (ret != '\n') {
+    key_inputs[strlen(key_inputs)] = ret;
+  }
+
+  return ret;
 }

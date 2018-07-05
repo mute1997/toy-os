@@ -157,7 +157,7 @@ void general_protection(struct interrupt_frame *frame){
 }
 __attribute__((interrupt))
 void page_fault(struct interrupt_frame *frame){
-  printk("[INTERRUPT] page fault interrupt");
+  printk("[INTERRUPT] page fault interrupt\n");
   hlt();
 }
 __attribute__((interrupt))

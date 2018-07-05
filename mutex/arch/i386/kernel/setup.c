@@ -9,6 +9,9 @@
 #include <mm.h>
 #include <std/syscall.h>
 
+#include <lib/scanf.h>
+#include <lib/echo.h>
+
 void setup(u32 magic, u32 addr) {
   if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) printk("invalid magic number\n");
 
@@ -30,9 +33,12 @@ void setup(u32 magic, u32 addr) {
 
   init_keyboard(); /* Initialize keyboard */
 
-  char *str = "ECHO SYSTEMCALL";
-  int ret, arg = NULL;
-  syscall(SYS_ECHO, str, arg, arg, ret);
+  char s[256];
+  while (1) {
+    memset(s, NULL, sizeof(s));
+    scanf(s);
+    echo(s);
+  }
 
   hlt();
 }
