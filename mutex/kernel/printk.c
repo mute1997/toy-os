@@ -23,22 +23,24 @@ int vprintk(const char *fmt, va_list args) {
 
   flush_screen();
 
+  /* split by '\n' */
   for (int i=0;i<strlen(buf);i++) {
     if (buf[i] == '\n') {
       bottom++;
-      i++;
+      continue;
     }
     log_buf[bottom][strlen(log_buf[bottom])] = buf[i];
   }
 
-  /* output log_buf to screen */
+  /* if overflow log_buf, shift top */
   int lines = bottom - top + 1;
+  if(lines > LOG_BUF_LIMIT) top++;
+
+  /* output log_buf to screen */
+  lines = bottom - top + 1;
   for(int i=0;i<lines;i++) {
     put_str(VRAM_MODE, 0, i, COLOR_LIGHTGREY, log_buf[top + i]);
   }
-
-  /* if overflow log_buf, shift top */
-  if(lines > LOG_BUF_LIMIT) top++;
 
   return printed_len;
 }
