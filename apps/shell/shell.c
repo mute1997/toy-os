@@ -1,24 +1,62 @@
 #include <lib/scanf.h>
 #include <lib/echo.h>
+#include <mm.h>
 
-#define CMD_ECHO 0x0
+typedef struct cmd {
+  char *cmd_name;
+  int (*built_in_cmds)(char*);
+  struct cmd *next;
+} cmd_t;
 
-// TODO exitコマンド
-// TODO xコマンド
-// TODO xpコマンド
-int (*built_in_cmds[])() = {
-  echo
-};
+cmd_t first_built_in_cmd;
 
-int find_and_run_built_in_cmd(char *cmd_name) {
-  // TODO strcmpで比較する
-  if (cmd_name == "echo") {built_in_cmds[CMD_ECHO]();return 0;}
+cmd_t *get_end_built_in_cmd() {
+  struct cmd *p = &first_built_in_cmd;
+  while (p->next != NULL) {
+    p = p->next;
+  }
+  return p;
+}
+
+void define_cmd(char *cmd_name, int (*built_in_cmd)(char*)) {
+  cmd_t *p = get_end_built_in_cmd();
+
+
+  // TODO kallocを書く
+  // TODO alloc_pageでページをマップするようにする
+  // cmd_t *c = kalloc(sizeof(cmd_t));
+  // c->cmd_name = cmd_name;
+  // c->built_in_cmds = built_in_cmd;
+  // p->next = c;
+}
+
+int find_and_run_built_in_cmd(char *cmd_name, char *arg) {
+  struct cmd *p = &first_built_in_cmd;
+  while (p->next != NULL) {
+    p = p->next;
+    if (strcmp(p->cmd_name) == 0) {
+      p->built_in_cmds(arg);
+      return 0;
+    }
+  }
   return -1;
 }
 
+void setup_built_in_cmds() {
+// TODO exitコマンド
+// TODO xコマンド
+// TODO xpコマンド
+  define_cmd("echo", echo);
+}
+
+// TODO コンテキストスイッチさせる
+// TODO ユーザーランドで動作させる
 void shell_main() {
   char cmd[256];
   int ret;
+
+  /* reigister built-in commands */
+  setup_built_in_cmds();
 
   /* main loop */
   while (1) {
@@ -28,10 +66,9 @@ void shell_main() {
     echo("mutex-os > ");
     scanf(cmd);
 
-    // TODO cmdをsplitする
-    ret = find_and_run_built_in_cmd(cmd);
-
-    /* TODO search filesystem */
+    // TODO cmdをsplitしてコマンド名と引数に分ける
+    char *arg = "arg";
+    ret = find_and_run_built_in_cmd(cmd, arg);
 
     if (ret != 0) {echo("command not found:");echo(cmd);}
 
