@@ -1,5 +1,6 @@
 #include <drivers/keyboard.h>
 #include <asm/types.h>
+#include <std/printk.h>
 #include <mm.h>
 
 char key_inputs[256];
@@ -7,6 +8,9 @@ char scancodes[0xff];
 char shifted_scancodes[0xff];
 int is_pressed_shift = NOT_PRESS;
 int is_pressed_enter = NOT_PRESS;
+
+extern char log_buf[LOG_BUF_SIZE][256];
+extern unsigned long bottom;
 
 void init_keyboard() {
   memset(scancodes, NULL, sizeof(scancodes));
@@ -52,6 +56,9 @@ void init_keyboard() {
   shifted_scancodes[0x08] = '&';
   shifted_scancodes[0x09] = '*';
   shifted_scancodes[0x0a] = '(';
+
+  // space
+  scancodes[0x39] = ' ';
 }
 
 char get_char_from_scancode(int scancode) {
@@ -70,6 +77,15 @@ char get_char_from_scancode(int scancode) {
   } else if (scancode == 0x9c) {
     is_pressed_enter = NOT_PRESS;
     memset(key_inputs, NULL, sizeof(key_inputs));
+  }
+
+  // backspace
+  if (scancode == 0x0e) {
+    if (strlen(key_inputs) > 0) {
+      key_inputs[strlen(key_inputs)-1] = NULL;
+      log_buf[bottom][strlen(log_buf[bottom])-1] = NULL;
+      output_log_buf();
+    }
   }
 
   if (is_pressed_shift) ret = shifted_scancodes[scancode];

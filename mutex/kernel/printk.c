@@ -1,9 +1,7 @@
+#include <std/printk.h>
 #include <drivers/video.h>
 #include <mm.h>
 #include <std/stdarg.h>
-
-#define LOG_BUF_SIZE 32768
-#define LOG_BUF_LIMIT 25
 
 char log_buf[LOG_BUF_SIZE][256];
 unsigned long top = 0;
@@ -15,13 +13,19 @@ void setup_log_buf() {
   memset(log_buf, 0, sizeof(log_buf));
 }
 
+void output_log_buf() {
+  flush_screen();
+
+  int lines = bottom - top + 1;
+  for(int i=0;i<lines;i++) {
+    put_str(VRAM_MODE, 0, i, COLOR_LIGHTGREY, log_buf[top + i]);
+  }
+}
 
 int vprintk(const char *fmt, va_list args) {
   char buf[256];
   memset(buf, NULL, sizeof(buf));
   int printed_len = vsnprintf(buf, sizeof(buf), fmt, args);
-
-  flush_screen();
 
   /* split by '\n' */
   for (int i=0;i<strlen(buf);i++) {
@@ -37,10 +41,7 @@ int vprintk(const char *fmt, va_list args) {
   if(lines > LOG_BUF_LIMIT) top++;
 
   /* output log_buf to screen */
-  lines = bottom - top + 1;
-  for(int i=0;i<lines;i++) {
-    put_str(VRAM_MODE, 0, i, COLOR_LIGHTGREY, log_buf[top + i]);
-  }
+  output_log_buf();
 
   return printed_len;
 }
