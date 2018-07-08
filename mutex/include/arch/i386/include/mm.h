@@ -66,6 +66,8 @@ void setup_physical_memory(u32 addr);
 int phys_to_page(u32 *addr);
 u32 *alloc_page();
 void free_page(u32 *addr);
+u32 *kmalloc(u32 size);
+void free(u32 addr);
 
 /* mmu */
 void setup_page_table();

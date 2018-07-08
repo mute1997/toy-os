@@ -20,21 +20,19 @@ cmd_t *get_end_built_in_cmd() {
 
 void define_cmd(char *cmd_name, int (*built_in_cmd)(char*)) {
   cmd_t *p = get_end_built_in_cmd();
-
-
-  // TODO kallocを書く
-  // TODO alloc_pageでページをマップするようにする
-  // cmd_t *c = kalloc(sizeof(cmd_t));
-  // c->cmd_name = cmd_name;
-  // c->built_in_cmds = built_in_cmd;
-  // p->next = c;
+  cmd_t *c = kmalloc(sizeof(cmd_t));
+  memset(c, NULL, sizeof(c));
+  c->cmd_name = cmd_name;
+  c->built_in_cmds = built_in_cmd;
+  p->next = c;
 }
 
 int find_and_run_built_in_cmd(char *cmd_name, char *arg) {
   struct cmd *p = &first_built_in_cmd;
   while (p->next != NULL) {
     p = p->next;
-    if (strcmp(p->cmd_name) == 0) {
+    p->cmd_name;
+    if (strcmp(p->cmd_name) == 0) { // TODO ここでページフォルトが起きる
       p->built_in_cmds(arg);
       return 0;
     }
