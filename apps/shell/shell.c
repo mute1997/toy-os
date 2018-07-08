@@ -29,10 +29,13 @@ void define_cmd(char *cmd_name, int (*built_in_cmd)(char*)) {
 
 int find_and_run_built_in_cmd(char *cmd_name, char *arg) {
   struct cmd *p = &first_built_in_cmd;
+  int ret;
   while (p->next != NULL) {
     p = p->next;
     p->cmd_name;
-    if (strcmp(p->cmd_name) == 0) { // TODO ここでページフォルトが起きる
+    ret = strcmp(p->cmd_name, cmd_name);
+    printk("ret %d\n", ret);
+    if (ret == 0) {
       p->built_in_cmds(arg);
       return 0;
     }
