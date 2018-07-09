@@ -56,5 +56,6 @@ u32 *kmalloc(u32 size) {
   return (u32*)(virt_heap_end & 0xFFFFF000);
 }
 
+/* TODO */
 void free(u32 addr) {
 }

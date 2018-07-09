@@ -113,7 +113,7 @@ void nmi (struct interrupt_frame *frame){
 }
 __attribute__((interrupt))
 void breakpoint_exception (struct interrupt_frame *frame){
-  printk("breakpoint exception");
+  printk("breakpoint exception\n");
 }
 __attribute__((interrupt))
 void overflow (struct interrupt_frame *frame){

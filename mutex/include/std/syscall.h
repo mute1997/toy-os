@@ -10,10 +10,10 @@
         : "a" (i) \
         : "memory", "cc")
 
-#define SYS_X     500
-#define SYS_XP    501
-#define SYS_ECHO  502
-#define SYS_SCAN  503
+#define SYS_X      500
+#define SYS_XP     501
+#define SYS_READ   502
+#define SYS_WRITE  503
 
 int (*syscalls[SYSCALL_COUNT])(u32 ebx, u32 ecx, u32 edx);
 
@@ -25,5 +25,5 @@ int sys_x(u32 addr);
 int sys_xp(u32 addr);
 
 // sysio
-int sys_echo(char *str);
-int sys_scan(char *p);
+int sys_write(int fd, char *buf, u32 count);
+int sys_read(int fd, char *buf, u32 count);

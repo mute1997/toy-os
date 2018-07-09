@@ -19,10 +19,10 @@ unsigned long strlen(char *s) {
 
 int strcmp(const char *s1, const char *s2) {
   int i = 0;
+  if (s1 == NULL || s1 == NULL) return -1;
   while (s1[i] != NULL || s2[i] != NULL) {
     if (s1[i] != s2[i]) {
-      // TODO 0以外を返すとpagefaultになる
-      return 2;
+      return -1;
     }
     i++;
   }

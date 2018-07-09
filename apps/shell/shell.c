@@ -1,10 +1,10 @@
 #include <lib/scanf.h>
-#include <lib/echo.h>
+#include <app/echo.h>
 #include <mm.h>
 
 typedef struct cmd {
   char *cmd_name;
-  int (*built_in_cmds)(char*);
+  int (*built_in_cmds)(int, char*); // TODO 引数を直す
   struct cmd *next;
 } cmd_t;
 
@@ -20,23 +20,23 @@ cmd_t *get_end_built_in_cmd() {
 
 void define_cmd(char *cmd_name, int (*built_in_cmd)(char*)) {
   cmd_t *p = get_end_built_in_cmd();
+
   cmd_t *c = kmalloc(sizeof(cmd_t));
   memset(c, NULL, sizeof(c));
   c->cmd_name = cmd_name;
   c->built_in_cmds = built_in_cmd;
+  c->next = NULL;
+
   p->next = c;
 }
 
-int find_and_run_built_in_cmd(char *cmd_name, char *arg) {
+int find_and_run_built_in_cmd(char *cmd_name, char *arg, int argc) {
   struct cmd *p = &first_built_in_cmd;
-  int ret;
+
   while (p->next != NULL) {
     p = p->next;
-    p->cmd_name;
-    ret = strcmp(p->cmd_name, cmd_name);
-    printk("ret %d\n", ret);
-    if (ret == 0) {
-      p->built_in_cmds(arg);
+    if (strcmp(p->cmd_name, cmd_name) == 0) {
+      p->built_in_cmds(argc, arg);
       return 0;
     }
   }
@@ -44,10 +44,27 @@ int find_and_run_built_in_cmd(char *cmd_name, char *arg) {
 }
 
 void setup_built_in_cmds() {
-// TODO exitコマンド
-// TODO xコマンド
-// TODO xpコマンド
-  define_cmd("echo", echo);
+  memset(first_built_in_cmd, NULL, sizeof(first_built_in_cmd));
+
+  // TODO exitコマンド
+  // TODO xコマンド
+  // TODO xpコマンド
+  define_cmd("echo", echo_main);
+}
+
+int split(char *str, char *ret[256]) {
+  int i=0;
+  ret[i] = kmalloc(sizeof(char) * 256);
+  ret[i][0] = *str;
+  while (*str++ != NULL) {
+    if (*str == ' ') {
+      *str++;
+      if (strlen(ret[i]) != 0) i++;
+      ret[i] = kmalloc(sizeof(char) * 256);
+    }
+    ret[i][strlen(ret[i])] = *str;
+  }
+  return i;
 }
 
 // TODO コンテキストスイッチさせる
@@ -64,15 +81,14 @@ void shell_main() {
     memset(cmd, NULL, sizeof(cmd));
 
     /* prompt */
-    echo("mutex-os > ");
+    printf("mutex-os > ");
     scanf(cmd);
 
-    // TODO cmdをsplitしてコマンド名と引数に分ける
-    char *arg = "arg";
-    ret = find_and_run_built_in_cmd(cmd, arg);
+    char *split_cmd[256];
+    memset(split_cmd, NULL, sizeof(split_cmd));
+    int argc = split(cmd, split_cmd);
+    ret = find_and_run_built_in_cmd(split_cmd[0], split_cmd, argc);
 
-    if (ret != 0) {echo("command not found:");echo(cmd);}
-
-    echo("\n");
+    if (ret != 0) printf("command not found: %s\n", cmd);
   }
 }

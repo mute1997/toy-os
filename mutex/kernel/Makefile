@@ -13,6 +13,7 @@ CFLAGS = \
 				 -I ../include \
 				 -I ../include/arch/$(ARCH)/include \
 				 -I ../kernel \
+				 -I ../../apps/include \
 				 -m32 \
 				 -fno-stack-protector \
 				 -mno-sse
@@ -31,6 +32,7 @@ DRIVER_DIR=../drivers
 KERNEL_DIR=.
 LIB_DIR=../lib
 MM_DIR=../mm
+APPS_DIR=../../apps
 
 # output
 BUILD_DIR=../../build
@@ -57,11 +59,12 @@ OBJS = $(BOOT_DIR)/loader.o \
 			$(KERNEL_DIR)/syscalls/handler.o \
 			$(LIB_DIR)/vsprintf.o \
 			$(LIB_DIR)/scanf.o \
-			$(LIB_DIR)/echo.o \
+			$(LIB_DIR)/printf.o \
 			$(MM_DIR)/init.o \
 			$(MM_DIR)/page_alloc.o \
 			$(MM_DIR)/mmu.o \
-			../../apps/shell/shell.o
+			$(APPS_DIR)/shell/shell.o \
+			$(APPS_DIR)/echo/echo.o
 
 %.o : %.c
 	$(CC) $(CFLAGS) -o $*.o $*.c
