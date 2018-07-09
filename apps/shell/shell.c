@@ -4,7 +4,7 @@
 
 typedef struct cmd {
   char *cmd_name;
-  int (*built_in_cmds)(int, char*); // TODO 引数を直す
+  int (*built_in_cmds)(int, char*);
   struct cmd *next;
 } cmd_t;
 
@@ -88,6 +88,8 @@ void shell_main() {
     memset(split_cmd, NULL, sizeof(split_cmd));
     int argc = split(cmd, split_cmd);
     ret = find_and_run_built_in_cmd(split_cmd[0], split_cmd, argc);
+
+    // TODO split_cmdをfreeする
 
     if (ret != 0) printf("command not found: %s\n", cmd);
   }
