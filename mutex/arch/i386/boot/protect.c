@@ -133,6 +133,7 @@ void init_tss(u16 ss0, u32 esp0) {
 	t->esp0 = ((unsigned)&kernel_stack) - X86_STACK_TOP_RESERVED;
 
   /* TODO ページフォルトするので直す */
+  /* TODO ページフォルトをハンドルして詳細情報を表示できるようにする */
 	t->ss0 = 0x10;
 	t->cs = 0x0b;
   t->ss = t->ds = t->es = t->fs = t->gs = 0x13;
@@ -140,6 +141,10 @@ void init_tss(u16 ss0, u32 esp0) {
   t->iomap_base = sizeof(struct tss_entry);
 
   tss_flush(); /* flush tss */
+
+  u32 *a = 0x0;
+  a = "a";
+  printk("not caused page fault\n");
 
   /* DEBUG */
   // printk("kernel_stack(address) 0x%x\n", &kernel_stack-X86_STACK_TOP_RESERVED);

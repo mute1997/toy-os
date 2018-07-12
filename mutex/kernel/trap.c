@@ -158,6 +158,9 @@ void general_protection(struct interrupt_frame *frame){
 __attribute__((interrupt))
 void page_fault(struct interrupt_frame *frame){
   printk("[INTERRUPT] page fault interrupt\n");
+  // TODO cr2レジスタの値を表示させる
+  // TODO フラグの情報をとって表示する
+  printk("flags : 0x%x\n", frame->flags);
   hlt();
 }
 __attribute__((interrupt))
