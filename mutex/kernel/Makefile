@@ -44,6 +44,7 @@ ISO_FILE=$(BUILD_DIR)/mutex.iso
 # -----------------------
 OBJS = $(BOOT_DIR)/loader.o \
 			$(BOOT_DIR)/protect.o \
+			$(BOOT_DIR)/tss.o \
 			$(ARCH_DIR)/$(ARCH)/kernel/setup.o \
 			$(ARCH_DIR)/$(ARCH)/lib/string.o \
 			$(ARCH_DIR)/$(DRIVER_DIR)/vram/video.o \
@@ -64,7 +65,8 @@ OBJS = $(BOOT_DIR)/loader.o \
 			$(MM_DIR)/page_alloc.o \
 			$(MM_DIR)/mmu.o \
 			$(APPS_DIR)/shell/shell.o \
-			$(APPS_DIR)/echo/echo.o
+			$(APPS_DIR)/echo/echo.o \
+			$(APPS_DIR)/hello/hello.o
 
 %.o : %.c
 	$(CC) $(CFLAGS) -o $*.o $*.c

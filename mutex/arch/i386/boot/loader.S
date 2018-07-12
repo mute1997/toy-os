@@ -1,5 +1,6 @@
 global start
 global page_directory
+global kernel_stack
 
 section .multiboot
 header_start:
@@ -51,7 +52,7 @@ start_higher_half:
   mov dword [page_directory], 0
   invlpg [0]
 
-  mov esp, stack+STACK_SIZE
+  mov esp, kernel_stack+STACK_SIZE
 
   push ebx
   push eax
@@ -60,5 +61,5 @@ start_higher_half:
   hlt
 
 section .bss
-stack:
+kernel_stack:
   resb STACK_SIZE
