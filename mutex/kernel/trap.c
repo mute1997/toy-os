@@ -6,6 +6,7 @@
 #include <asm/types.h>
 #include <trap.h>
 #include <i8325.h>
+#include <mm.h>
 
 __attribute__((interrupt))
 void interrupt_stub(struct interrupt_frame *frame){
@@ -157,10 +158,34 @@ void general_protection(struct interrupt_frame *frame){
 }
 __attribute__((interrupt))
 void page_fault(struct interrupt_frame *frame){
-  printk("[INTERRUPT] page fault interrupt\n");
-  // TODO cr2レジスタの値を表示させる
-  // TODO フラグの情報をとって表示する
-  printk("flags : 0x%x\n", frame->flags);
+  printk("\n");
+  printk("!!! PageFault !!!\n");
+  u32 fault_address;
+
+  char *errors[] = {
+    "", /* not error */
+    "Non present page access.", /* 0x1 present */
+    "Write access error.", /* 0x10 W/R access */
+    "Supervisor error.", /* 0x100 usermode, supervisor error */
+    "PDE reserved error.", /* 0x1000 reserved */
+    "Instruction fetch error.", /* 0x10000 instruction fetch */
+  };
+
+  read_cr2(fault_address);
+
+  printk("     address: 0x%x\n", fault_address);
+  printk("        flag: 0x%x\n", frame->flags);
+
+  /* print flag info */
+  printk("   flag info:\n");
+  for (int i=0;i<6;i++) {
+    int flags = frame->flags;
+    if ((flags >> i) & 1) {
+      printk("     %s\n", errors[i+1]);
+    }
+  }
+  
+  printk("\n");
   hlt();
 }
 __attribute__((interrupt))
