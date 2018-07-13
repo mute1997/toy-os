@@ -41,9 +41,9 @@ extern u32 _text_end;
 
 #define write_cr3(x) __asm__ __volatile__ ("movl %0,%%cr3": :"r" (x))
 #define write_cr0(x) __asm__ __volatile__ ("movl %0,%%cr0": :"r" (x))
-#define read_cr2(x) __asm__ __volatile__ ("mov %0, %%cr2" \
-      : \
-      :"r" (x));
+#define read_cr2(x) __asm__ __volatile__ ("mov %%cr2, %0" \
+      : "=r" (x)\
+      :);
 #define read_cr0() ({\
       u32 __ret; \
       __asm__ __volatile__ ( \

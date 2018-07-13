@@ -135,6 +135,7 @@ void copr_not_available (struct interrupt_frame *frame){
 __attribute__((interrupt))
 void double_fault(struct interrupt_frame *frame){
   printk("double fault");
+  hlt();
 }
 __attribute__((interrupt))
 void copr_seg_overrun(struct interrupt_frame *frame){
@@ -158,9 +159,11 @@ void general_protection(struct interrupt_frame *frame){
 }
 __attribute__((interrupt))
 void page_fault(struct interrupt_frame *frame){
+  u32 fault_address;
+  read_cr2(fault_address);
+
   printk("\n");
   printk("!!! PageFault !!!\n");
-  u32 fault_address;
 
   char *errors[] = {
     "", /* not error */
@@ -170,8 +173,6 @@ void page_fault(struct interrupt_frame *frame){
     "PDE reserved error.", /* 0x1000 reserved */
     "Instruction fetch error.", /* 0x10000 instruction fetch */
   };
-
-  read_cr2(fault_address);
 
   printk("     address: 0x%x\n", fault_address);
   printk("        flag: 0x%x\n", frame->flags);

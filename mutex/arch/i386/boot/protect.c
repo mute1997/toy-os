@@ -14,6 +14,8 @@ extern void load_gdt(u32 desc_struct);
 extern void syshandler();
 extern char kernel_stack;
 
+extern hello_main(); // TODO あとで消す
+
 struct desctableptr gdt_desc, idt_desc;
 struct desc_struct gdt[GDT_ENTRIES]; /* GDT */
 struct gatedesc idt[IDT_SIZE]; /* IDT */
@@ -131,24 +133,28 @@ void init_tss(u16 ss0, u32 esp0) {
 
   /* set TSS */
 	t->esp0 = ((unsigned)&kernel_stack) - X86_STACK_TOP_RESERVED;
-
-  /* TODO ページフォルトするので直す */
-  /* TODO ページフォルトをハンドルして詳細情報を表示できるようにする */
 	t->ss0 = 0x10;
 	t->cs = 0x0b;
   t->ss = t->ds = t->es = t->fs = t->gs = 0x13;
-
   t->iomap_base = sizeof(struct tss_entry);
 
   tss_flush(); /* flush tss */
 
-  u32 *a = 0x0;
-  a = "a";
-  printk("not caused page fault\n");
-
   /* DEBUG */
+  /* MEMO: 0でページフォルト起きてるので0x0にマッピングする
+   * 関数のポインタが4KBにアラインされてないかも
+   * 0から命令をフェッチしようとして死んでる可能性がある
+   * 0x100551
+   */
+
+  /* TODO ページフォルトしたアドレスが正しくない */
+  // c0101e74
+  // u32 *a = 0xA0000000;
+  // *a = 0;
+
+  u32 p = virt_to_phys(&hello_main);
+  map_one_page(&hello_main, 0x0);
   // printk("kernel_stack(address) 0x%x\n", &kernel_stack-X86_STACK_TOP_RESERVED);
-  // hlt();
 
   printk("Setup TSS... [OK]\n");
 }
