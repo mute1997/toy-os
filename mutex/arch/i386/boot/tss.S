@@ -1,7 +1,7 @@
 global tss_flush
 global jmp_ring3
 
-extern hello_main
+extern shell_main
 
 tss_flush:
   mov ax, 0x2B
@@ -9,6 +9,7 @@ tss_flush:
   ret
 
 jmp_ring3:
+  cli
   mov ax, 0x23
   mov dx, ax
   mov es, ax
@@ -20,5 +21,5 @@ jmp_ring3:
   push eax
   pushf
   push 0x1B
-  push hello_main
+  push shell_main
   iret

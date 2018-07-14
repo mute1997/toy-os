@@ -155,15 +155,12 @@ void stack_exception(struct interrupt_frame *frame){
 }
 __attribute__((interrupt))
 void general_protection(struct interrupt_frame *frame){
-  printk("general protection");
+  printk("general protection\n");
+  hlt();
 }
 __attribute__((interrupt))
 void page_fault(struct interrupt_frame *frame){
-  u32 fault_address;
-  read_cr2(fault_address);
-
-  printk("\n");
-  printk("!!! PageFault !!!\n");
+  u32 fault_address = read_cr2();
 
   char *errors[] = {
     "", /* not error */
@@ -174,10 +171,9 @@ void page_fault(struct interrupt_frame *frame){
     "Instruction fetch error.", /* 0x10000 instruction fetch */
   };
 
+  printk("\nPageFault {\n");
   printk("     address: 0x%x\n", fault_address);
   printk("        flag: 0x%x\n", frame->flags);
-
-  /* print flag info */
   printk("   flag info:\n");
   for (int i=0;i<6;i++) {
     int flags = frame->flags;
@@ -186,7 +182,7 @@ void page_fault(struct interrupt_frame *frame){
     }
   }
   
-  printk("\n");
+  printk("}\n\n");
   hlt();
 }
 __attribute__((interrupt))

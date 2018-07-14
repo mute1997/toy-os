@@ -21,9 +21,9 @@ KERNEL_PAGE_NUMBER equ (KERNEL_VIRTUAL_BASE >> 22)
 section .data
 align 0x1000
 page_directory:
-  dd 0x00000083
+  dd 0x00000087
   times (KERNEL_PAGE_NUMBER - 1) dd 0
-  dd 0x00000083
+  dd 0x00000087
   times (1024 - KERNEL_PAGE_NUMBER - 1) dd 0
 
 section .text

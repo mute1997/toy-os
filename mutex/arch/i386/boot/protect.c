@@ -4,6 +4,7 @@
 #include <std/hlt.h>
 #include <trap.h>
 #include <archtypes.h>
+#include <mm.h>
 
 #define load_idt(dtr) __asm__ __volatile__("lidt %0"::"m" (*dtr))
 #define store_idt(dtr) __asm__ __volatile__("sidt %0":"=m" (*dtr))
@@ -13,8 +14,6 @@ extern tss_flush();
 extern void load_gdt(u32 desc_struct);
 extern void syshandler();
 extern char kernel_stack;
-
-extern hello_main(); // TODO あとで消す
 
 struct desctableptr gdt_desc, idt_desc;
 struct desc_struct gdt[GDT_ENTRIES]; /* GDT */
@@ -119,7 +118,7 @@ void init_code_segment(struct desc_struct *desc, u32 base, u32 size, int privile
   desc->access = (privilege << 5) | (PRESENT | SEGMENT | EXECUTABLE | READABLE);
 }
 
-void init_tss(u16 ss0, u32 esp0) {
+void init_tss() {
   struct tss_entry *t = &tss;
   int index = TSS_INDEX;
   struct desc_struct *tssgdt;
@@ -129,7 +128,7 @@ void init_tss(u16 ss0, u32 esp0) {
   init_data_segment(tssgdt, (u32)t, sizeof(struct tss_entry), INTR_PRIVILEGE);
   tssgdt->access = PRESENT | (INTR_PRIVILEGE << 5) | TSS_TYPE;
 
-  memset(t, 0, sizeof(*t)); /* initialize tss */
+  memset(t, 0, sizeof(struct tss_entry)); /* initialize tss */
 
   /* set TSS */
 	t->esp0 = ((unsigned)&kernel_stack) - X86_STACK_TOP_RESERVED;
@@ -137,26 +136,10 @@ void init_tss(u16 ss0, u32 esp0) {
 	t->cs = 0x0b;
   t->ss = t->ds = t->es = t->fs = t->gs = 0x13;
   t->iomap_base = sizeof(struct tss_entry);
-
-  tss_flush(); /* flush tss */
+	t->cr3 = read_cr3();
 
   /* DEBUG */
-  /* MEMO: 0でページフォルト起きてるので0x0にマッピングする
-   * 関数のポインタが4KBにアラインされてないかも
-   * 0から命令をフェッチしようとして死んでる可能性がある
-   * 0x100551
-   */
-
-  /* TODO ページフォルトしたアドレスが正しくない */
-  // c0101e74
-  // u32 *a = 0xA0000000;
-  // *a = 0;
-
-  u32 p = virt_to_phys(&hello_main);
-  map_one_page(&hello_main, 0x0);
-  // printk("kernel_stack(address) 0x%x\n", &kernel_stack-X86_STACK_TOP_RESERVED);
-
-  printk("Setup TSS... [OK]\n");
+  /* TODO ユーザーランドのスタックはどこになっているのか確認する */
 }
 
 void switch_to_new_idt() {
@@ -168,6 +151,11 @@ void switch_to_new_gdt() {
   load_gdt((u32)&gdt_desc);
 }
 
+void switch_to_new_tss() {
+  init_tss();
+  tss_flush();
+}
+
 void prot_load_selectors() {
   /* set new GDT */
   switch_to_new_gdt();
@@ -176,6 +164,9 @@ void prot_load_selectors() {
   /* set new IDT */
   switch_to_new_idt();
   printk("Setup idt...  [OK]\n");
+
+  switch_to_new_tss();
+  printk("Setup TSS...  [OK]\n");
 }
 
 void prot_init() {
@@ -199,10 +190,8 @@ void prot_init() {
   init_data_segment(&gdt[KERN_DS_INDEX], 0, 0xFFFFFFFF, KERNEL_PRIVILEGE); /* kernel data */
   init_code_segment(&gdt[USER_CS_INDEX], 0, 0xFFFFFFFF, USER_PRIVILEGE); /* user code */
   init_data_segment(&gdt[USER_DS_INDEX], 0, 0xFFFFFFFF, USER_PRIVILEGE);  /* user data */
-
   init_segment(&gdt[LDT_INDEX], 0x0, 0); /* unusable LDT */
   gdt[LDT_INDEX].access = PRESENT | LDT;
 
   prot_load_selectors();
-  init_tss(0x10, 0x0); 
 }

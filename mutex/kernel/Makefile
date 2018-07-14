@@ -57,10 +57,12 @@ OBJS = $(BOOT_DIR)/loader.o \
 			$(KERNEL_DIR)/syscalls/syscall.o \
 			$(KERNEL_DIR)/syscalls/sysio.o \
 			$(KERNEL_DIR)/syscalls/sysmemory.o \
+			$(KERNEL_DIR)/syscalls/syshlt.o \
 			$(KERNEL_DIR)/syscalls/handler.o \
 			$(LIB_DIR)/vsprintf.o \
 			$(LIB_DIR)/scanf.o \
 			$(LIB_DIR)/printf.o \
+			$(LIB_DIR)/hlt.o \
 			$(MM_DIR)/init.o \
 			$(MM_DIR)/page_alloc.o \
 			$(MM_DIR)/mmu.o \
